@@ -42,3 +42,5 @@ time.dat
 *.png
 .metadata/*
 RemoteSystemsTempFiles/*
+# IDE config
+.vscode
