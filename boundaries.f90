@@ -10,10 +10,10 @@
 !*	  TYPE (WAVE)  :: WAVE_INFO
 !*	  INTEGER BC_TYPE
 !*
-!*      IF (BC_TYPE.EQ.0) CALL OPEN (LO)
-!*	  IF (BC_TYPE.EQ.1) CALL SPONGE_LAYER (LO)
-!*	  IF (BC_TYPE.EQ.2) CALL BC_WALL (LO,WAVE_INFO)
-!*!	  IF (BC_TYPE.EQ.3) CALL BC_INPUT (LO,BCI_INFO,TIME)
+!*      IF (BC_TYPE == 0) CALL OPEN (LO)
+!*	  IF (BC_TYPE == 1) CALL SPONGE_LAYER (LO)
+!*	  IF (BC_TYPE == 2) CALL BC_WALL (LO,WAVE_INFO)
+!*!	  IF (BC_TYPE == 3) CALL BC_INPUT (LO,BCI_INFO,TIME)
 !*
 !*	  RETURN
 !*	  END
@@ -33,30 +33,30 @@ SUBROUTINE OPEN (LO)
     J_S = 1
     I_E = LO%NX
     J_E = LO%NY
-    IFIRST = I_S .EQ. 1
-    JFIRST = J_S .EQ. 1
-    IEND = I_E .EQ. LO%NX
-    JEND = J_E .EQ. LO%NY
+    IFIRST = I_S == 1
+    JFIRST = J_S == 1
+    IEND = I_E == LO%NX
+    JEND = J_E == LO%NY
     !
     IF (JFIRST) THEN
         J = 1
         DO I = 2, LO%NX - 1
-            IF (LO%H(I, J) .GT. GX) THEN
+            IF (LO%H(I, J) > GX) THEN
                 CC = SQRT(GRAV * LO%H(I, J))
                 UH = 0.5 * (LO%M(I, J, 2) + LO%M(I - 1, J, 2))
                 UU = SQRT(UH**2 + LO%N(I, J, 2)**2)
                 ZZ = UU / CC
                 ARG = LO%N(I, J, 2)
-                IF (ARG .GT. ZERO) THEN
+                IF (ARG > ZERO) THEN
                     ZZ = -ZZ
                 ENDIF
-                !			   IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
-                IF (ABS(ZZ) .GT. UB) ZZ = 0.0
+                !			   IF (ABS(ZZ) <= EPS) ZZ = 0.0
+                IF (ABS(ZZ) > UB) ZZ = 0.0
                 LO%Z(I, J, 2) = ZZ
             ELSE
                 LO%Z(I, J, 2) = ZERO
             ENDIF
-            ! if ( i .EQ. 715 ) then
+            ! if ( i == 715 ) then
             !     WRITE(*,*) "Fortran--------------------->dbdb"
             !     WRITE(*,*) LO%H(I,1), LO%M(I,1,2), LO%N(I,1,2), 1/CC
             !     WRITE(*,*) LO%M(I-1,1,2), ZZ
@@ -67,17 +67,17 @@ SUBROUTINE OPEN (LO)
     IF (JEND) THEN
         J = LO%NY
         DO I = 2, LO%NX - 1
-            IF (LO%H(I, J) .GT. GX) THEN
+            IF (LO%H(I, J) > GX) THEN
                 CC = SQRT(GRAV * LO%H(I, J))
                 UH = 0.5 * (LO%M(I, J, 2) + LO%M(I - 1, J, 2))
                 UU = SQRT(UH**2 + LO%N(I, J - 1, 2)**2)
                 ZZ = UU / CC
                 ARG = LO%N(I, J - 1, 2)
-                IF (ARG .LT. ZERO) THEN
+                IF (ARG < ZERO) THEN
                     ZZ = -ZZ
                 ENDIF
-                !			   IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
-                IF (ABS(ZZ) .GT. UB) ZZ = 0.0
+                !			   IF (ABS(ZZ) <= EPS) ZZ = 0.0
+                IF (ABS(ZZ) > UB) ZZ = 0.0
                 LO%Z(I, J, 2) = ZZ
             ELSE
                 LO%Z(I, J, 2) = ZERO
@@ -88,9 +88,9 @@ SUBROUTINE OPEN (LO)
     IF (IFIRST) THEN
         I = 1
         DO J = 2, LO%NY - 1
-            IF (LO%H(I, J) .GT. GX) THEN
+            IF (LO%H(I, J) > GX) THEN
                 CC = SQRT(GRAV * LO%H(I, J))
-                IF (LO%H(I, J - 1) .GT. GX) THEN
+                IF (LO%H(I, J - 1) > GX) THEN
                     UH = 0.5 * (LO%N(I, J, 2) + LO%N(I, J - 1, 2))
                 ELSE
                     UH = LO%N(I, J, 2)
@@ -98,11 +98,11 @@ SUBROUTINE OPEN (LO)
                 UU = SQRT(UH**2 + LO%M(I, J, 2)**2)
                 ZZ = UU / CC
                 ARG = LO%M(I, J, 2)
-                IF (ARG .GT. ZERO) THEN
+                IF (ARG > ZERO) THEN
                     ZZ = -ZZ
                 ENDIF
-                !			   IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
-                IF (ABS(ZZ) .GT. UB) ZZ = 0.0
+                !			   IF (ABS(ZZ) <= EPS) ZZ = 0.0
+                IF (ABS(ZZ) > UB) ZZ = 0.0
                 LO%Z(I, J, 2) = ZZ
             ELSE
                 LO%Z(I, J, 2) = ZERO
@@ -113,17 +113,17 @@ SUBROUTINE OPEN (LO)
     IF (IEND) THEN
         I = LO%NX
         DO J = 2, LO%NY - 1
-            IF (LO%H(I, J) .GT. GX) THEN
+            IF (LO%H(I, J) > GX) THEN
                 CC = SQRT(GRAV * LO%H(I, J))
                 UH = 0.5 * (LO%N(I, J, 2) + LO%N(I, J - 1, 2))
                 UU = SQRT(UH**2 + LO%M(I - 1, J, 2)**2)
                 ZZ = UU / CC
                 ARG = LO%M(I - 1, J, 2)
-                IF (ARG .LT. ZERO) THEN
+                IF (ARG < ZERO) THEN
                     ZZ = -ZZ
                 ENDIF
-                !			   IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
-                IF (ABS(ZZ) .GT. UB) ZZ = 0.0
+                !			   IF (ABS(ZZ) <= EPS) ZZ = 0.0
+                IF (ABS(ZZ) > UB) ZZ = 0.0
                 LO%Z(I, J, 2) = ZZ
             ELSE
                 LO%Z(I, J, 2) = ZERO
@@ -132,15 +132,15 @@ SUBROUTINE OPEN (LO)
     ENDIF
     !
     IF (IFIRST .AND. JFIRST) THEN
-        IF (LO%H(1, 1) .GT. GX) THEN
+        IF (LO%H(1, 1) > GX) THEN
             QX = LO%M(1, 1, 2)
             QY = LO%N(1, 1, 2)
             CC = SQRT(GRAV * LO%H(1, 1))
             UH = SQRT(QX**2 + QY**2)
             ZZ = UH / CC
-            IF (QX .GT. ZERO .OR. QY.GT.ZERO) ZZ = -ZZ
-            !			IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
-            IF (ABS(ZZ) .GT. UB) ZZ = 0.0
+            IF (QX > ZERO .OR. QY > ZERO) ZZ = -ZZ
+            !			IF (ABS(ZZ) <= EPS) ZZ = 0.0
+            IF (ABS(ZZ) > UB) ZZ = 0.0
             LO%Z(1, 1, 2) = ZZ
         ELSE
             LO%Z(1, 1, 2) = ZERO
@@ -148,15 +148,15 @@ SUBROUTINE OPEN (LO)
     ENDIF
     !
     IF (IEND .AND. JFIRST) THEN
-        IF (LO%H(LO%NX, 1) .GT. GX) THEN
+        IF (LO%H(LO%NX, 1) > GX) THEN
             QX = LO%M(LO%NX - 1, 1, 2)
             QY = LO%N(LO%NX, 1, 2)
             CC = SQRT(GRAV * LO%H(LO%NX, 1))
             UH = SQRT(QX**2 + QY**2)
             ZZ = UH / CC
-            IF (QX .LT. ZERO .OR. QY.GT.ZERO) ZZ = -ZZ
-            !			IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
-            IF (ABS(ZZ) .GT. UB) ZZ = 0.0
+            IF (QX < ZERO .OR. QY > ZERO) ZZ = -ZZ
+            !			IF (ABS(ZZ) <= EPS) ZZ = 0.0
+            IF (ABS(ZZ) > UB) ZZ = 0.0
             LO%Z(LO%NX, 1, 2) = ZZ
         ELSE
             LO%Z(LO%NX, 1, 2) = ZERO
@@ -164,15 +164,15 @@ SUBROUTINE OPEN (LO)
     ENDIF
     !
     IF (IFIRST .AND. JEND) THEN
-        IF (LO%H(1, LO%NY) .GT. GX) THEN
+        IF (LO%H(1, LO%NY) > GX) THEN
             QX = LO%M(1, LO%NY, 2)
             QY = LO%N(1, LO%NY - 1, 2)
             CC = SQRT(GRAV * LO%H(1, LO%NY))
             UH = SQRT(QX**2 + QY**2)
             ZZ = UH / CC
-            IF (QX .GT. ZERO .OR. QY.LT.ZERO) ZZ = -ZZ
-            !			IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
-            IF (ABS(ZZ) .GT. UB) ZZ = 0.0
+            IF (QX > ZERO .OR. QY < ZERO) ZZ = -ZZ
+            !			IF (ABS(ZZ) <= EPS) ZZ = 0.0
+            IF (ABS(ZZ) > UB) ZZ = 0.0
             LO%Z(1, LO%NY, 2) = ZZ
         ELSE
             LO%Z(1, LO%NY, 2) = ZERO
@@ -180,18 +180,18 @@ SUBROUTINE OPEN (LO)
     ENDIF
     !
     IF (IEND .AND. JEND) THEN
-        IF (LO%H(LO%NX, LO%NY) .GT. GX) THEN
+        IF (LO%H(LO%NX, LO%NY) > GX) THEN
             QX = LO%M(LO%NX - 1, LO%NY, 2)
             QY = LO%N(LO%NX, LO%NY - 1, 2)
             CC = SQRT(GRAV * LO%H(LO%NX, LO%NY))
             UH = SQRT(QX**2 + QY**2)
             ZZ = UH / CC
-            IF (QX.LT.ZERO .OR. QY.LT.ZERO) ZZ = -ZZ
-            !			IF (ABS(ZZ) .LE. EPS) ZZ = 0.0
+            IF (QX < ZERO .OR. QY < ZERO) ZZ = -ZZ
+            !			IF (ABS(ZZ) <= EPS) ZZ = 0.0
             LO%Z(LO%NX, LO%NY, 2) = ZZ
             !	        LO%Z(LO%NX,LO%NY,2)=0.5*(LO%Z(LO%NX-1,LO%NY,2)			&
             !									+ LO%Z(LO%NX,LO%NY-1,2))
-            IF (ABS(LO%Z(LO%NX, LO%NY, 2)) .GT. UB)                    &
+            IF (ABS(LO%Z(LO%NX, LO%NY, 2)) > UB)                    &
                     LO%Z(LO%NX, LO%NY, 2) = 0.0
         ELSE
             LO%Z(LO%NX, LO%NY, 2) = ZERO
@@ -220,15 +220,15 @@ SUBROUTINE SPONGE_LAYER (LO)
     DO I = 1, LO%NX
         IP1 = I + 1
         IM1 = I - 1
-        IF (IP1.GE.LO%NX) IP1 = LO%NX
-        IF (IM1.LE.1) IM1 = 1
+        IF (IP1 >= LO%NX) IP1 = LO%NX
+        IF (IM1 <= 1) IM1 = 1
         DO J = 1, LO%NY
             JP1 = J + 1
             JM1 = J - 1
-            IF (JP1.GE.LO%NY) JP1 = LO%NY
-            IF (JM1.LE.1) JM1 = 1
-            IF (LO%SPONGE_COEFX(I, J).GT.ZERO .OR.                    &
-                    LO%SPONGE_COEFY(I, J).GT.ZERO) THEN
+            IF (JP1 >= LO%NY) JP1 = LO%NY
+            IF (JM1 <= 1) JM1 = 1
+            IF (LO%SPONGE_COEFX(I, J) > ZERO .OR.                    &
+                    LO%SPONGE_COEFY(I, J) > ZERO) THEN
                 CX = LO%SPONGE_COEFX(I, J)
                 CY = LO%SPONGE_COEFY(I, J)
                 !				CXY = SQRT(CX**2+CY**2)
@@ -276,7 +276,7 @@ SUBROUTINE SPONGE_COEF (LO)
 
     DEPTH = H_MEAN
 
-    IF (DEPTH.LE.GX) DEPTH = GX
+    IF (DEPTH <= GX) DEPTH = GX
 
     !DETERMINE CHARACTERISTIC WAVE LENGTH
     WAVELENGTH = 20.0 * DEPTH
@@ -291,7 +291,7 @@ SUBROUTINE SPONGE_COEF (LO)
 
     !.....IF LAYER01 ADOPTS SPHERICAL COORD,
     !		CONVERT WIDTH (IN METERS) TO ARC MINUTES
-    IF (LO%LAYCORD .EQ. 0) THEN
+    IF (LO%LAYCORD == 0) THEN
         SPONGE_WIDTH = WIDTH / R_EARTH * 180.0 / PI
     ELSE
         SPONGE_WIDTH = WIDTH
@@ -310,16 +310,16 @@ SUBROUTINE SPONGE_COEF (LO)
         DO J = 1, LO%NY
             X0 = LO%X(I)
             Y0 = LO%Y(J)
-            IF (X0 .LE. XS) THEN
+            IF (X0 <= XS) THEN
                 RX = -(X0 - XS)
-            ELSEIF (X0 .GE. XE) THEN
+            ELSEIF (X0 >= XE) THEN
                 RX = X0 - XE
             ELSE
                 RX = ZERO
             ENDIF
-            IF (Y0 .LE. YS) THEN
+            IF (Y0 <= YS) THEN
                 RY = -(Y0 - YS)
-            ELSEIF (Y0 .GE. YE) THEN
+            ELSEIF (Y0 >= YE) THEN
                 RY = Y0 - YE
             ELSE
                 RY = ZERO
@@ -327,17 +327,17 @@ SUBROUTINE SPONGE_COEF (LO)
             R = SQRT(RX**2 + RY**2)
             X_REL = RX
             Y_REL = RY
-            IF (X_REL .LE. ZERO) X_REL = ZERO
-            IF (Y_REL .LE. ZERO) Y_REL = ZERO
-            IF (X_REL .GE. R_MAX) X_REL = R_MAX
-            IF (Y_REL .GE. R_MAX) Y_REL = R_MAX
+            IF (X_REL <= ZERO) X_REL = ZERO
+            IF (Y_REL <= ZERO) Y_REL = ZERO
+            IF (X_REL >= R_MAX) X_REL = R_MAX
+            IF (Y_REL >= R_MAX) Y_REL = R_MAX
 
             COEFX(I, J) = ALPHA_C * OMEGA * (EXP((X_REL / R_MAX)**M) - 1.0)    &
                     / (EXP(1.0) - 1.0)
             COEFY(I, J) = ALPHA_C * OMEGA * (EXP((Y_REL / R_MAX)**M) - 1.0)    &
                     / (EXP(1.0) - 1.0)
-            IF (COEFX(I, J).LE.EPS) COEFX(I, J) = 0.0
-            IF (COEFY(I, J).LE.EPS) COEFY(I, J) = 0.0
+            IF (COEFX(I, J) <= EPS) COEFX(I, J) = 0.0
+            IF (COEFY(I, J) <= EPS) COEFY(I, J) = 0.0
         ENDDO
     ENDDO
     LO%SPONGE_COEFX = COEFX
@@ -371,14 +371,14 @@ SUBROUTINE H_CALC (LO, H_MEAN, H_MAX)
 
     DO I = 1, LO%NX
         DO J = 1, LO%NY
-            IF (LO%H(I, J) .GT. GX) THEN
+            IF (LO%H(I, J) > GX) THEN
                 H_SUM = H_SUM + LO%H(I, J)
-                IF (H_MAX.LT.LO%H(I, J)) H_MAX = LO%H(I, J)
+                IF (H_MAX < LO%H(I, J)) H_MAX = LO%H(I, J)
                 K = K + 1
             ENDIF
         ENDDO
     ENDDO
-    IF (K.GT.0) H_MEAN = H_SUM / K
+    IF (K > 0) H_MEAN = H_SUM / K
     !	  WRITE(*,*) H_MEAN
 
     RETURN
@@ -393,26 +393,26 @@ SUBROUTINE BC_WALL (LO, WAVE_INFO)
     USE WAVE_PARAMS
     TYPE (LAYER) :: LO
     TYPE (WAVE) :: WAVE_INFO
-    IF (LO%INI_SWITCH.EQ.2) THEN
-        IF (WAVE_INFO%INCIDENT.EQ.1) THEN
+    IF (LO%INI_SWITCH == 2) THEN
+        IF (WAVE_INFO%INCIDENT == 1) THEN
             LO%H(1:2, :) = -999.0
             LO%H(:, 1:2) = -999.0
             LO%H(LO%NX - 1:LO%NX, :) = -999.0
             !*	        LO%H(:,LO%NY-1:LO%NY) = -999.0
         ENDIF
-        IF (WAVE_INFO%INCIDENT.EQ.2) THEN
+        IF (WAVE_INFO%INCIDENT == 2) THEN
             LO%H(1:2, :) = -999.0
             !*            LO%H(:,1:2) = -999.0
             LO%H(LO%NX - 1:LO%NX, :) = -999.0
             LO%H(:, LO%NY - 1:LO%NY) = -999.0
         ENDIF
-        IF (WAVE_INFO%INCIDENT.EQ.3) THEN
+        IF (WAVE_INFO%INCIDENT == 3) THEN
             !*            LO%H(1:2,:) = -999.0
             LO%H(:, 1:2) = -999.0
             LO%H(LO%NX - 1:LO%NX, :) = -999.0
             LO%H(:, LO%NY - 1:LO%NY) = -999.0
         ENDIF
-        IF (WAVE_INFO%INCIDENT.EQ.4) THEN
+        IF (WAVE_INFO%INCIDENT == 4) THEN
             LO%H(1:2, :) = -999.0
             LO%H(:, 1:2) = -999.0
             !*	        LO%H(LO%NX-1:LO%NX,:) = -999.0
@@ -455,9 +455,9 @@ SUBROUTINE READ_FACTS (BCI_INFO, LO, SWITCH)
     !	  WRITE(*,*) BCI_INFO%FNAMEU
     !	  WRITE(*,*) BCI_INFO%FNAMEV
     FNAME = ''
-    IF (SWITCH.EQ.0) FNAME = BCI_INFO%FNAMEH
-    IF (SWITCH.EQ.1) FNAME = BCI_INFO%FNAMEU
-    IF (SWITCH.EQ.2) FNAME = BCI_INFO%FNAMEV
+    IF (SWITCH == 0) FNAME = BCI_INFO%FNAMEH
+    IF (SWITCH == 1) FNAME = BCI_INFO%FNAMEU
+    IF (SWITCH == 2) FNAME = BCI_INFO%FNAMEV
     WRITE (*, *) FNAME
     !
     !...../////// READ H,U,V DATA FROM FACTS OUTPUT ////////////
@@ -467,7 +467,7 @@ SUBROUTINE READ_FACTS (BCI_INFO, LO, SWITCH)
         STOP
     END IF
     POS = 0
-    DO WHILE (POS.LE.0)
+    DO WHILE (POS <= 0)
         READ (1, *) DUMP
         !         WRITE (*,*) DUMP
         POS = INDEX(DUMP, 'GEOMETRY')
@@ -479,7 +479,7 @@ SUBROUTINE READ_FACTS (BCI_INFO, LO, SWITCH)
     ALLOCATE(SNAPSHOT(NX, NY, NT))
     SNAPSHOT = ZERO
 
-    IF (SWITCH.EQ.0) THEN
+    IF (SWITCH == 0) THEN
         ALLOCATE(BCI_INFO%X(NX))
         ALLOCATE(BCI_INFO%Y(NY))
         ALLOCATE(BCI_INFO%T(NT))
@@ -512,7 +512,7 @@ SUBROUTINE READ_FACTS (BCI_INFO, LO, SWITCH)
 
     CLOSE(1)
 
-    IF (SWITCH.EQ.0) THEN
+    IF (SWITCH == 0) THEN
         BCI_INFO%NX = NX
         BCI_INFO%NY = NY
         BCI_INFO%NT = NT
@@ -520,9 +520,9 @@ SUBROUTINE READ_FACTS (BCI_INFO, LO, SWITCH)
         !*	     BCI_INFO%T(:) = BCI_INFO%T(:)-BCI_INFO%T(1)
     ENDIF
     !.....CONVERT UNITS FROM CM OR CM/S TO M OR M/S
-    IF (SWITCH.EQ.0) BCI_INFO%SNAPSHOT = SNAPSHOT / 100.0
-    IF (SWITCH.EQ.1) BCI_INFO%SNAPSHOTU = SNAPSHOT / 100.0
-    IF (SWITCH.EQ.2) BCI_INFO%SNAPSHOTV = SNAPSHOT / 100.0
+    IF (SWITCH == 0) BCI_INFO%SNAPSHOT = SNAPSHOT / 100.0
+    IF (SWITCH == 1) BCI_INFO%SNAPSHOTU = SNAPSHOT / 100.0
+    IF (SWITCH == 2) BCI_INFO%SNAPSHOTV = SNAPSHOT / 100.0
 
     !	  WRITE(*,*) NX,NY,NT
 
@@ -561,7 +561,7 @@ SUBROUTINE  GET_BC_DATA (BI, LO)
     CALL READ_FACTS (BI, LO, 1)
     CALL READ_FACTS (BI, LO, 2)
     WRITE(*, *) 'PROCESSING DATA FOR FACTS INPUT BOUNDARIES...'
-    IF (LO%LAYGOV.EQ.0) THEN
+    IF (LO%LAYGOV == 0) THEN
         SH = LO%DX / 60.0 * 0.5
     ELSE
         SH = 0.5 * LO%DX / (RAD_MIN * R_EARTH * COS(LO%YO * RAD_DEG)) / 60.0
@@ -571,7 +571,7 @@ SUBROUTINE  GET_BC_DATA (BI, LO)
     DO K = 1, BI%NT
         WRITE (*, *) '   PROCESSING FACTS SNAPSHOT: ', K, ' OUT OF ', BI%NT
         !IF LAYER LO USES SPHERICAL COORDINATES //
-        IF (LO%LAYCORD.EQ.0) THEN
+        IF (LO%LAYCORD == 0) THEN
             !...........OBTAIN VALUES OF Z AT BOUNDARIES
             TEMPX = 0.0
             TEMPY = 0.0
@@ -660,7 +660,7 @@ SUBROUTINE  GET_BC_DATA (BI, LO)
             ENDDO
         ENDIF
         !IF LAYER LO USES UTM COORDINATES ///
-        IF (LO%LAYCORD.EQ.1) THEN
+        IF (LO%LAYCORD == 1) THEN
             !...........OBTAIN VALUES OF Z AT BOUNDARIES
             TEMPX = 0.0
             TEMPY = 0.0
@@ -762,7 +762,7 @@ SUBROUTINE  GET_BC_DATA (BI, LO)
         !OBTAIN FLUXES AND ADJUST VALUES ON LAND
         J = 1    !BOTTOM BOUNDARY
         DO I = 1, LO%NX
-            IF (LO%H(I, J).LE.GX) THEN
+            IF (LO%H(I, J) <= GX) THEN
                 BI%Z_HORI(I, K, 1) = ZERO
                 BI%U_HORI(I, K, 1) = ZERO
                 BI%V_HORI(I, K, 1) = ZERO
@@ -773,7 +773,7 @@ SUBROUTINE  GET_BC_DATA (BI, LO)
         ENDDO
         J = LO%NY    !TOP BOUNDARY
         DO I = 1, LO%NX
-            IF (LO%H(I, J).LE.GX) THEN
+            IF (LO%H(I, J) <= GX) THEN
                 BI%Z_HORI(I, K, 2) = ZERO
                 BI%U_HORI(I, K, 2) = ZERO
                 BI%V_HORI(I, K, 2) = ZERO
@@ -785,7 +785,7 @@ SUBROUTINE  GET_BC_DATA (BI, LO)
 
         I = 1    !LEFT BOUNDARY
         DO J = 1, LO%NY
-            IF (LO%H(I, J).LE.GX) THEN
+            IF (LO%H(I, J) <= GX) THEN
                 BI%Z_VERT(J, K, 1) = ZERO
                 BI%U_VERT(J, K, 1) = ZERO
                 BI%V_VERT(J, K, 1) = ZERO
@@ -796,7 +796,7 @@ SUBROUTINE  GET_BC_DATA (BI, LO)
         ENDDO
         I = LO%NX    !RIGHT BOUNDARY
         DO J = 1, LO%NY
-            IF (LO%H(I, J).LE.GX) THEN
+            IF (LO%H(I, J) <= GX) THEN
                 BI%Z_VERT(J, K, 2) = ZERO
                 BI%U_VERT(J, K, 2) = ZERO
                 BI%V_VERT(J, K, 2) = ZERO
@@ -839,8 +839,8 @@ SUBROUTINE BC_INPUT (BI, LO, TIME)
     !.....OBTAIN SURFACE ELEVATION AT T = TIME FROM FACTS DATA
     KT = 1
     DO K = 1, BI%NT - 1
-        IF (TIME - 0.5 * LO%DT.GE.BI%T(K) .AND.                        &
-                TIME - 0.5 * LO%DT.LT.BI%T(K + 1)) KT = K
+        IF (TIME - 0.5 * LO%DT >= BI%T(K) .AND.                        &
+                TIME - 0.5 * LO%DT < BI%T(K + 1)) KT = K
     ENDDO
     C1 = (TIME - 0.5 * LO%DT - BI%T(KT)) / (BI%T(KT + 1) - BI%T(KT))
     C2 = 1.0 - C1
@@ -865,7 +865,7 @@ SUBROUTINE BC_INPUT (BI, LO, TIME)
     !.....OBTAIN VOLUME FLUX AT T = TIME
     KT = 1
     DO K = 1, BI%NT - 1
-        IF (TIME.GE.BI%T(K) .AND. TIME.LT.BI%T(K + 1)) KT = K
+        IF (TIME >= BI%T(K) .AND. TIME < BI%T(K + 1)) KT = K
     ENDDO
     C1 = (TIME - BI%T(KT)) / (BI%T(KT + 1) - BI%T(KT))
     C2 = 1.0 - C1
