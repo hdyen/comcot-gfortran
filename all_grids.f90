@@ -30,155 +30,155 @@ SUBROUTINE ALL_GRID (LO, LA)
 
     !<<...START OF LEVEL 2
     DO L2 = 1, NUM_GRID
-        IF (LA(L2)%LAYSWITCH.EQ.0 .AND. LA(L2)%PARENT.EQ.LO%ID) THEN
+        IF (LA(L2)%LAYSWITCH == 0 .AND. LA(L2)%PARENT == LO%ID) THEN
             DO K2 = 1, LA(L2)%REL_TIME
-                IF (K2 .EQ. 1) THEN
+                IF (K2 == 1) THEN
                     CALL JNQ (LO, LA(L2))
                 ELSE
                     CALL NEWQ (LO, LA(L2), K2)
                 ENDIF
-                IF (LA(L2)%SEDI_SWITCH.EQ.0 .AND.                    &
-                        LA(L2)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L2))
+                IF (LA(L2)%SEDI_SWITCH == 0 .AND.                    &
+                        LA(L2)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L2))
                 CALL MASS (LA(L2))
 
                 !<<............START OF LEVEL 3
                 DO L3 = 1, NUM_GRID
-                    IF (LA(L3)%LAYSWITCH.EQ.0 .AND.                        &
-                            LA(L3)%PARENT.EQ.LA(L2)%ID) THEN
+                    IF (LA(L3)%LAYSWITCH == 0 .AND.                        &
+                            LA(L3)%PARENT == LA(L2)%ID) THEN
                         DO K3 = 1, LA(L3)%REL_TIME
-                            IF (K3 .EQ. 1) THEN
+                            IF (K3 == 1) THEN
                                 CALL JNQ (LA(L2), LA(L3))
                             ELSE
                                 CALL NEWQ (LA(L2), LA(L3), K3)
                             ENDIF
-                            IF (LA(L3)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                    LA(L3)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L3))
+                            IF (LA(L3)%SEDI_SWITCH == 0 .AND.                    &
+                                    LA(L3)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L3))
                             CALL MASS (LA(L3))
 
                             !<<............START OF LEVEL 4
                             DO L4 = 1, NUM_GRID
-                                IF (LA(L4)%LAYSWITCH.EQ.0 .AND.                        &
-                                        LA(L4)%PARENT.EQ.LA(L3)%ID) THEN
+                                IF (LA(L4)%LAYSWITCH == 0 .AND.                        &
+                                        LA(L4)%PARENT == LA(L3)%ID) THEN
                                     DO K4 = 1, LA(L4)%REL_TIME
-                                        IF (K4 .EQ. 1) THEN
+                                        IF (K4 == 1) THEN
                                             CALL JNQ (LA(L3), LA(L4))
                                         ELSE
                                             CALL NEWQ (LA(L3), LA(L4), K4)
                                         ENDIF
-                                        IF (LA(L4)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                LA(L4)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L4))
+                                        IF (LA(L4)%SEDI_SWITCH == 0 .AND.                    &
+                                                LA(L4)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L4))
                                         CALL MASS (LA(L4))
 
                                         !<<........... START OF LEVEL 5
                                         DO L5 = 1, NUM_GRID
-                                            IF (LA(L5)%LAYSWITCH.EQ.0 .AND.                        &
-                                                    LA(L5)%PARENT.EQ.LA(L4)%ID) THEN
+                                            IF (LA(L5)%LAYSWITCH == 0 .AND.                        &
+                                                    LA(L5)%PARENT == LA(L4)%ID) THEN
                                                 DO K5 = 1, LA(L5)%REL_TIME
-                                                    IF (K5 .EQ. 1) THEN
+                                                    IF (K5 == 1) THEN
                                                         CALL JNQ (LA(L4), LA(L5))
                                                     ELSE
                                                         CALL NEWQ (LA(L4), LA(L5), K5)
                                                     ENDIF
-                                                    IF (LA(L5)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                            LA(L5)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L5))
+                                                    IF (LA(L5)%SEDI_SWITCH == 0 .AND.                    &
+                                                            LA(L5)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L5))
                                                     CALL MASS (LA(L5))
 
                                                     !<<............START OF LEVEL 6
                                                     DO L6 = 1, NUM_GRID
-                                                        IF (LA(L6)%LAYSWITCH.EQ.0 .AND.                        &
-                                                                LA(L6)%PARENT.EQ.LA(L5)%ID) THEN
+                                                        IF (LA(L6)%LAYSWITCH == 0 .AND.                        &
+                                                                LA(L6)%PARENT == LA(L5)%ID) THEN
                                                             DO K6 = 1, LA(L6)%REL_TIME
-                                                                IF (K6 .EQ. 1) THEN
+                                                                IF (K6 == 1) THEN
                                                                     CALL JNQ (LA(L5), LA(L6))
                                                                 ELSE
                                                                     CALL NEWQ (LA(L5), LA(L6), K6)
                                                                 ENDIF
-                                                                IF (LA(L6)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                                        LA(L6)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L6))
+                                                                IF (LA(L6)%SEDI_SWITCH == 0 .AND.                    &
+                                                                        LA(L6)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L6))
                                                                 CALL MASS (LA(L6))
 
                                                                 !<<........... START OF LEVEL 7
                                                                 DO L7 = 1, NUM_GRID
-                                                                    IF (LA(L7)%LAYSWITCH.EQ.0 .AND.                        &
-                                                                            LA(L7)%PARENT.EQ.LA(L6)%ID) THEN
+                                                                    IF (LA(L7)%LAYSWITCH == 0 .AND.                        &
+                                                                            LA(L7)%PARENT == LA(L6)%ID) THEN
                                                                         DO K7 = 1, LA(L7)%REL_TIME
-                                                                            IF (K7 .EQ. 1) THEN
+                                                                            IF (K7 == 1) THEN
                                                                                 CALL JNQ (LA(L6), LA(L7))
                                                                             ELSE
                                                                                 CALL NEWQ (LA(L6), LA(L7), K7)
                                                                             ENDIF
-                                                                            IF (LA(L7)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                                                    LA(L7)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L7))
+                                                                            IF (LA(L7)%SEDI_SWITCH == 0 .AND.                    &
+                                                                                    LA(L7)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L7))
                                                                             CALL MASS (LA(L7))
 
                                                                             !<<........... START OF LEVEL 8
                                                                             DO L8 = 1, NUM_GRID
-                                                                                IF (LA(L8)%LAYSWITCH.EQ.0 .AND.                        &
-                                                                                        LA(L8)%PARENT.EQ.LA(L7)%ID) THEN
+                                                                                IF (LA(L8)%LAYSWITCH == 0 .AND.                        &
+                                                                                        LA(L8)%PARENT == LA(L7)%ID) THEN
                                                                                     DO K8 = 1, LA(L8)%REL_TIME
-                                                                                        IF (K8 .EQ. 1) THEN
+                                                                                        IF (K8 == 1) THEN
                                                                                             CALL JNQ (LA(L7), LA(L8))
                                                                                         ELSE
                                                                                             CALL NEWQ (LA(L7), LA(L8), K8)
                                                                                         ENDIF
-                                                                                        IF (LA(L8)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                                                                LA(L8)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L8))
+                                                                                        IF (LA(L8)%SEDI_SWITCH == 0 .AND.                    &
+                                                                                                LA(L8)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L8))
                                                                                         CALL MASS (LA(L8))
 
                                                                                         !<<............START OF LEVEL 9
                                                                                         DO L9 = 1, NUM_GRID
-                                                                                            IF (LA(L9)%LAYSWITCH.EQ.0 .AND.                        &
-                                                                                                    LA(L9)%PARENT.EQ.LA(L8)%ID) THEN
+                                                                                            IF (LA(L9)%LAYSWITCH == 0 .AND.                        &
+                                                                                                    LA(L9)%PARENT == LA(L8)%ID) THEN
                                                                                                 DO K9 = 1, LA(L9)%REL_TIME
-                                                                                                    IF (K9 .EQ. 1) THEN
+                                                                                                    IF (K9 == 1) THEN
                                                                                                         CALL JNQ (LA(L8), LA(L9))
                                                                                                     ELSE
                                                                                                         CALL NEWQ (LA(L8), LA(L9), K9)
                                                                                                     ENDIF
-                                                                                                    IF (LA(L9)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                                                                            LA(L9)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L9))
+                                                                                                    IF (LA(L9)%SEDI_SWITCH == 0 .AND.                    &
+                                                                                                            LA(L9)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L9))
                                                                                                     CALL MASS (LA(L9))
 
                                                                                                     !<<............START OF LEVEL 10
                                                                                                     DO L10 = 1, NUM_GRID
-                                                                                                        IF (LA(L10)%LAYSWITCH.EQ.0 .AND.                        &
-                                                                                                                LA(L10)%PARENT.EQ.LA(L9)%ID) THEN
+                                                                                                        IF (LA(L10)%LAYSWITCH == 0 .AND.                        &
+                                                                                                                LA(L10)%PARENT == LA(L9)%ID) THEN
                                                                                                             DO K10 = 1, LA(L10)%REL_TIME
-                                                                                                                IF (K10 .EQ. 1) THEN
+                                                                                                                IF (K10 == 1) THEN
                                                                                                                     CALL JNQ (LA(L9), LA(L10))
                                                                                                                 ELSE
                                                                                                                     CALL NEWQ (LA(L9), LA(L10), K10)
                                                                                                                 ENDIF
-                                                                                                                IF (LA(L10)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                                                                                        LA(L10)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L10))
+                                                                                                                IF (LA(L10)%SEDI_SWITCH == 0 .AND.                    &
+                                                                                                                        LA(L10)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L10))
                                                                                                                 CALL MASS (LA(L10))
 
                                                                                                                 !<<............START OF LEVEL 11
                                                                                                                 DO L11 = 1, NUM_GRID
-                                                                                                                    IF (LA(L11)%LAYSWITCH.EQ.0 .AND.                        &
-                                                                                                                            LA(L11)%PARENT.EQ.LA(L10)%ID) THEN
+                                                                                                                    IF (LA(L11)%LAYSWITCH == 0 .AND.                        &
+                                                                                                                            LA(L11)%PARENT == LA(L10)%ID) THEN
                                                                                                                         DO K11 = 1, LA(L11)%REL_TIME
-                                                                                                                            IF (K11 .EQ. 1) THEN
+                                                                                                                            IF (K11 == 1) THEN
                                                                                                                                 CALL JNQ (LA(L10), LA(L11))
                                                                                                                             ELSE
                                                                                                                                 CALL NEWQ (LA(L10), LA(L11), K11)
                                                                                                                             ENDIF
-                                                                                                                            IF (LA(L11)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                                                                                                    LA(L11)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L11))
+                                                                                                                            IF (LA(L11)%SEDI_SWITCH == 0 .AND.                    &
+                                                                                                                                    LA(L11)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L11))
                                                                                                                             CALL MASS (LA(L11))
 
                                                                                                                             !<<........... START OF LEVEL 12
                                                                                                                             DO L12 = 1, NUM_GRID
-                                                                                                                                IF (LA(L12)%LAYSWITCH.EQ.0 .AND.                        &
-                                                                                                                                        LA(L12)%PARENT.EQ.LA(L11)%ID) THEN
+                                                                                                                                IF (LA(L12)%LAYSWITCH == 0 .AND.                        &
+                                                                                                                                        LA(L12)%PARENT == LA(L11)%ID) THEN
                                                                                                                                     DO K12 = 1, LA(L12)%REL_TIME
-                                                                                                                                        IF (K12 .EQ. 1) THEN
+                                                                                                                                        IF (K12 == 1) THEN
                                                                                                                                             CALL JNQ (LA(L11), LA(L12))
                                                                                                                                         ELSE
                                                                                                                                             CALL NEWQ (LA(L11), LA(L12), K12)
                                                                                                                                         ENDIF
-                                                                                                                                        IF (LA(L12)%SEDI_SWITCH.EQ.0 .AND.                    &
-                                                                                                                                                LA(L12)%LAYCORD.NE.0) CALL SED_TRANSPORT (LA(L12))
+                                                                                                                                        IF (LA(L12)%SEDI_SWITCH == 0 .AND.                    &
+                                                                                                                                                LA(L12)%LAYCORD /= 0) CALL SED_TRANSPORT (LA(L12))
                                                                                                                                         CALL MASS (LA(L12))
 
                                                                                                                                         !<<........... INSERT MORE LEVELS HERE
@@ -187,7 +187,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                                                                                                         CALL MOMENT (LA(L12))
                                                                                                                                         NHALF = FLOOR(LA(L12)%REL_TIME / 2.0) + 1
-                                                                                                                                        IF (K12.EQ.NHALF) THEN
+                                                                                                                                        IF (K12 == NHALF) THEN
                                                                                                                                             CALL JNZ (LA(L11), LA(L12))
                                                                                                                                         ENDIF
                                                                                                                                         CALL UPDATE (LA(L12))
@@ -198,7 +198,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                                                                                             CALL MOMENT (LA(L11))
                                                                                                                             NHALF = FLOOR(LA(L11)%REL_TIME / 2.0) + 1
-                                                                                                                            IF (K11.EQ.NHALF) THEN
+                                                                                                                            IF (K11 == NHALF) THEN
                                                                                                                                 CALL JNZ (LA(L10), LA(L11))
                                                                                                                             ENDIF
                                                                                                                             CALL UPDATE (LA(L11))
@@ -209,7 +209,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                                                                                 CALL MOMENT (LA(L10))
                                                                                                                 NHALF = FLOOR(LA(L10)%REL_TIME / 2.0) + 1
-                                                                                                                IF (K10 .EQ. NHALF) THEN
+                                                                                                                IF (K10 == NHALF) THEN
                                                                                                                     CALL JNZ (LA(L9), LA(L10))
                                                                                                                 ENDIF
                                                                                                                 CALL UPDATE (LA(L10))
@@ -220,7 +220,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                                                                     CALL MOMENT (LA(L9))
                                                                                                     NHALF = FLOOR(LA(L9)%REL_TIME / 2.0) + 1
-                                                                                                    IF (K9 .EQ. NHALF) THEN
+                                                                                                    IF (K9 == NHALF) THEN
                                                                                                         CALL JNZ (LA(L8), LA(L9))
                                                                                                     ENDIF
                                                                                                     CALL UPDATE (LA(L9))
@@ -231,7 +231,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                                                         CALL MOMENT (LA(L8))
                                                                                         NHALF = FLOOR(LA(L8)%REL_TIME / 2.0) + 1
-                                                                                        IF (K8 .EQ. NHALF) THEN
+                                                                                        IF (K8 == NHALF) THEN
                                                                                             CALL JNZ (LA(L7), LA(L8))
                                                                                         ENDIF
                                                                                         CALL UPDATE (LA(L8))
@@ -242,7 +242,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                                             CALL MOMENT (LA(L7))
                                                                             NHALF = FLOOR(LA(L7)%REL_TIME / 2.0) + 1
-                                                                            IF (K7 .EQ. NHALF) THEN
+                                                                            IF (K7 == NHALF) THEN
                                                                                 CALL JNZ (LA(L6), LA(L7))
                                                                             ENDIF
                                                                             CALL UPDATE (LA(L7))
@@ -253,7 +253,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                                 CALL MOMENT (LA(L6))
                                                                 NHALF = FLOOR(LA(L6)%REL_TIME / 2.0) + 1
-                                                                IF (K6 .EQ. NHALF) THEN
+                                                                IF (K6 == NHALF) THEN
                                                                     CALL JNZ (LA(L5), LA(L6))
                                                                 ENDIF
                                                                 CALL UPDATE (LA(L6))
@@ -264,7 +264,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                                     CALL MOMENT (LA(L5))
                                                     NHALF = FLOOR(LA(L5)%REL_TIME / 2.0) + 1
-                                                    IF (K5 .EQ. NHALF) THEN
+                                                    IF (K5 == NHALF) THEN
                                                         CALL JNZ (LA(L4), LA(L5))
                                                     ENDIF
                                                     CALL UPDATE (LA(L5))
@@ -275,7 +275,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                                         CALL MOMENT (LA(L4))
                                         NHALF = FLOOR(LA(L4)%REL_TIME / 2.0) + 1
-                                        IF (K4 .EQ. NHALF) THEN
+                                        IF (K4 == NHALF) THEN
                                             CALL JNZ (LA(L3), LA(L4))
                                         ENDIF
                                         CALL UPDATE (LA(L4))
@@ -286,7 +286,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                             CALL MOMENT (LA(L3))
                             NHALF = FLOOR(LA(L3)%REL_TIME / 2.0) + 1
-                            IF (K3 .EQ. NHALF) THEN
+                            IF (K3 == NHALF) THEN
                                 CALL JNZ (LA(L2), LA(L3))
                             ENDIF
                             CALL UPDATE (LA(L3))
@@ -297,7 +297,7 @@ SUBROUTINE ALL_GRID (LO, LA)
 
                 CALL MOMENT (LA(L2))
                 NHALF = FLOOR(LA(L2)%REL_TIME / 2.0) + 1
-                IF (K2 .EQ. NHALF) THEN
+                IF (K2 == NHALF) THEN
                     CALL JNZ (LO, LA(L2))
                 ENDIF
                 CALL UPDATE (LA(L2))
@@ -320,7 +320,7 @@ SUBROUTINE UPDATE (LO)
 
     LO%Z(1, :, 2) = LO%Z(2, :, 2)
     LO%Z(:, 1, 2) = LO%Z(:, 2, 2)
-    IF (LO%LAYGOV .GE. 1) THEN
+    IF (LO%LAYGOV >= 1) THEN
         LO%DZ(1, :, 2) = LO%DZ(2, :, 2)
         LO%DZ(:, 1, 2) = LO%DZ(:, 2, 2)
         LO%DZ(:, :, 1) = LO%DZ(:, :, 2)
@@ -328,11 +328,11 @@ SUBROUTINE UPDATE (LO)
     LO%Z(:, :, 1) = LO%Z(:, :, 2)
     LO%M(:, :, 1) = LO%M(:, :, 2)
     LO%N(:, :, 1) = LO%N(:, :, 2)
-    IF (LO%LAYGOV.GT.1) THEN
+    IF (LO%LAYGOV > 1) THEN
         LO%M0(:, :) = LO%M(:, :, 1)
         LO%N0(:, :) = LO%N(:, :, 1)
     ENDIF
-    IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+    IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
         LO%HT(:, :, 1) = LO%HT(:, :, 2)
         LO%H(:, :) = LO%H(:, :) + LO%HT(:, :, 2) - LO%HT(:, :, 1)
     ENDIF
@@ -362,7 +362,7 @@ SUBROUTINE JNZ (LO, LA)
     COMMON /CONS/ ELMAX, GRAV, PI, R_EARTH, GX, EPS, ZERO, ONE, NUM_GRID, &
             NUM_FLT, V_LIMIT, RAD_DEG, RAD_MIN
 
-    IF (LA%SC_OPTION .EQ. 0) THEN
+    IF (LA%SC_OPTION == 0) THEN
         HALF = (LA%REL_SIZE * LA%REL_SIZE) / 2.0
         IR = LA%REL_SIZE
         IS = LA%CORNERS(1)
@@ -384,9 +384,9 @@ SUBROUTINE JNZ (LO, LA)
                         !			      JJ=(J-JS)*IR+1+KJ
                         II = I0 + KI
                         JJ = J0 + KJ
-                        !*			      IF (LA%H(II,JJ) .GT. GX) THEN
-                        IF (LA%H(II, JJ) + LA%Z(II, JJ, 2) .GT. GX) THEN
-                            IF (MOD(LA%REL_TIME, 2) .EQ. 0) THEN
+                        !*			      IF (LA%H(II,JJ) > GX) THEN
+                        IF (LA%H(II, JJ) + LA%Z(II, JJ, 2) > GX) THEN
+                            IF (MOD(LA%REL_TIME, 2) == 0) THEN
                                 SUM = SUM + 0.5 * (LA%Z(II, JJ, 1) + LA%Z(II, JJ, 2))
                             ELSE
                                 SUM = SUM + LA%Z(II, JJ, 2)
@@ -396,7 +396,7 @@ SUBROUTINE JNZ (LO, LA)
                         ENDIF
                     ENDDO
                 ENDDO
-                IF (COUNT .GT. HALF) THEN
+                IF (COUNT >  HALF) THEN
                     LO%Z(I, J, 2) = SUM / COUNT
                 ELSE
                     LO%Z(I, J, 2) = 0.0
@@ -430,7 +430,7 @@ SUBROUTINE JNQ (LO, LA)
     USE LAYER_PARAMS
     TYPE (LAYER) :: LO, LA
 
-    IF (LA%SC_OPTION.EQ.0) THEN
+    IF (LA%SC_OPTION == 0) THEN
         IS = LA%CORNERS(1)
         IE = LA%CORNERS(2)
         JS = LA%CORNERS(3)
@@ -478,8 +478,8 @@ SUBROUTINE EDGEINTERP_VERT (FLUX, NY, LA, SIDE)
     YE = LA%CORNERS(4)
 
     J_SHIFT = -YS * IR + 1
-    IF (SIDE .EQ. 0) II = 1      !FOR LEFT BOUNDARY, SIDE=0
-    IF (SIDE .EQ. 1) II = LA%NX  !FOR RIGHT BOUNDARY, SIDE=1
+    IF (SIDE == 0) II = 1      !FOR LEFT BOUNDARY, SIDE=0
+    IF (SIDE == 1) II = LA%NX  !FOR RIGHT BOUNDARY, SIDE=1
 
     DO J = YS, YE
         FLUX_S = 0.5 * (FLUX(J - 1) + FLUX(J))
@@ -493,8 +493,8 @@ SUBROUTINE EDGEINTERP_VERT (FLUX, NY, LA, SIDE)
         DO K = 1, LA%REL_SIZE
             JJ = JS + K
             LA%M(II, JJ, 1) = 2.0 * K * C1 + C2    !EDGE(2*K)
-            !*			IF (LA%H(II,JJ) .LE. GX) LA%M(II,JJ,1) = 0.0
-            IF (LA%H(II, JJ) + LA%Z(II, JJ, 1) .LE. GX) LA%M(II, JJ, 1) = 0.0
+            !*			IF (LA%H(II,JJ) <= GX) LA%M(II,JJ,1) = 0.0
+            IF (LA%H(II, JJ) + LA%Z(II, JJ, 1) <= GX) LA%M(II, JJ, 1) = 0.0
         ENDDO
     ENDDO
 
@@ -529,8 +529,8 @@ SUBROUTINE EDGEINTERP_HORI (FLUX, NX, LA, SIDE)
     YE = LA%CORNERS(4)
 
     I_SHIFT = -XS * IR + 1
-    IF (SIDE .EQ. 0) JJ = 1      !FOR BOTTOM BOUNDARY, SIDE=0
-    IF (SIDE .EQ. 1) JJ = LA%ny  !FOR TOP BOUNDARY, SIDE=1
+    IF (SIDE == 0) JJ = 1      !FOR BOTTOM BOUNDARY, SIDE=0
+    IF (SIDE == 1) JJ = LA%ny  !FOR TOP BOUNDARY, SIDE=1
 
     DO I = XS, XE
         FLUX_S = 0.5 * (FLUX(I - 1) + FLUX(I))
@@ -544,8 +544,8 @@ SUBROUTINE EDGEINTERP_HORI (FLUX, NX, LA, SIDE)
         DO K = 1, LA%REL_SIZE
             II = IS + K
             LA%N(II, JJ, 1) = 2.0 * K * C1 + C2    !EDGE(2*K)
-            !*			IF (LA%H(II,JJ) .LE. 0.0) LA%N(II,JJ,1) = 0.0
-            IF (LA%H(II, JJ) + LA%Z(II, JJ, 1) .LE. GX) LA%N(II, JJ, 1) = 0.0
+            !*			IF (LA%H(II,JJ) <= 0.0) LA%N(II,JJ,1) = 0.0
+            IF (LA%H(II, JJ) + LA%Z(II, JJ, 1) <= GX) LA%N(II, JJ, 1) = 0.0
         ENDDO
     ENDDO
 
@@ -580,7 +580,7 @@ SUBROUTINE NEWQ (LO, LA, T)
     TYPE (LAYER) :: LO, LA
     INTEGER T
 
-    IF (LA%SC_OPTION .EQ. 0) THEN
+    IF (LA%SC_OPTION == 0) THEN
         CALL NEWQ_VERT(LO, LA, T, 0) ! LEFT BOUNDARY
         CALL NEWQ_VERT(LO, LA, T, 1) ! RIGHT BOUNDARY
         CALL NEWQ_HORI(LO, LA, T, 0) ! BOTTOM BOUNDARY
@@ -627,18 +627,18 @@ SUBROUTINE NEWQ_VERT (LO, LA, T, SIDE)
     JS = LA%CORNERS(3)
     JE = LA%CORNERS(4)
 
-    IF (SIDE .EQ. 0) I = IS - 1 !FOR LEFT BOUNDARY, SIDE=0
-    IF (SIDE .EQ. 1) I = IE   !FOR RIGHT BOUNDARY, SIDE=1
+    IF (SIDE == 0) I = IS - 1 !FOR LEFT BOUNDARY, SIDE=0
+    IF (SIDE == 1) I = IE   !FOR RIGHT BOUNDARY, SIDE=1
 
     C1 = (T - 1.0) / LA%REL_TIME
     C2 = 1.0 - C1
 
     IP1 = I + 1
     DO J = JS - 2, JE + 2
-        IF ((LO%H(I, J) + LO%Z(I, J, 2).GT.GX)                            &
-                .AND. (LO%H(IP1, J) + LO%Z(IP1, J, 2).GT.GX)) THEN
-            IF (T.EQ.2) THEN !THIS ENSURES FORECAST CALCULATION ONLY BEING DONE ONCE
-                IF (LO%LAYCORD .EQ. 0) THEN
+        IF ((LO%H(I, J) + LO%Z(I, J, 2) > GX)                            &
+                .AND. (LO%H(IP1, J) + LO%Z(IP1, J, 2) > GX)) THEN
+            IF (T == 2) THEN !THIS ENSURES FORECAST CALCULATION ONLY BEING DONE ONCE
+                IF (LO%LAYCORD == 0) THEN
                     JM1 = J - 1
                     TOT_N = LO%N(I, J, 1) + LO%N(IP1, J, 1) + LO%N(I, JM1, 1)    &
                             + LO%N(IP1, JM1, 1)
@@ -648,7 +648,7 @@ SUBROUTINE NEWQ_VERT (LO, LA, T, SIDE)
                     HM = LO%HP(I, J) + 0.5 * (LO%Z(I, J, 2) + LO%Z(IP1, J, 2))
                     XM = LO%M(I, J, 1) - GRX * HM * (LO%Z(IP1, J, 2) - LO%Z(I, J, 2))
                 ENDIF
-                IF (ABS(XM).LT.EPS) XM = ZERO
+                IF (ABS(XM) < EPS) XM = ZERO
                 !*             LO%YFLUX(J) = 0.5*(XM+LO%M(I,J,1))
                 !              LO%YFLUX(J) = (T-1.0)/LA%REL_TIME*(XM-LO%M(I,J,1))+LO%M(I,J,1)
                 LO%YFLUX(J, SIDE + 1) = XM
@@ -695,20 +695,20 @@ SUBROUTINE NEWQ_HORI (LO, LA, T, SIDE)
     JS = LA%CORNERS(3)
     JE = LA%CORNERS(4)
 
-    IF (SIDE .EQ. 0) J = JS - 1 !FOR BOTTOM BOUNDARY, SIDE=0
-    IF (SIDE .EQ. 1) J = JE   !FOR TOP BOUNDARY, SIDE=1
+    IF (SIDE == 0) J = JS - 1 !FOR BOTTOM BOUNDARY, SIDE=0
+    IF (SIDE == 1) J = JE   !FOR TOP BOUNDARY, SIDE=1
 
     C1 = (T - 1.0) / LA%REL_TIME
     C2 = 1 - C1
 
     JP1 = J + 1
     DO I = IS - 2, IE + 2
-        IF ((LO%H(I, J) + LO%Z(I, J, 2).GT.GX)                            &
-                .AND. (LO%H(I, JP1) + LO%Z(I, JP1, 2).GT.GX)) THEN
+        IF ((LO%H(I, J) + LO%Z(I, J, 2) > GX)                            &
+                .AND. (LO%H(I, JP1) + LO%Z(I, JP1, 2) > GX)) THEN
             ! THIS ENSURES FORECAST CALCULATION ONLY BEING DONE ONCE
-            IF (T.EQ.2) THEN
+            IF (T == 2) THEN
                 IM1 = I - 1
-                IF (LO%LAYCORD .EQ. 0) THEN
+                IF (LO%LAYCORD == 0) THEN
                     TOT_M = LO%M(IM1, J, 1) + LO%M(IM1, JP1, 1) + LO%M(I, J, 1)    &
                             + LO%M(I, JP1, 1)
                     XN = LO%N(I, J, 1) - LO%R4(I, J) * (LO%Z(I, JP1, 2)        &
@@ -717,7 +717,7 @@ SUBROUTINE NEWQ_HORI (LO, LA, T, SIDE)
                     HN = LO%HQ(I, J) + 0.5 * (LO%Z(I, J, 2) + LO%Z(I, JP1, 2))
                     XN = LO%N(I, J, 1) - GRY * HN * (LO%Z(I, JP1, 2) - LO%Z(I, J, 2))
                 ENDIF
-                IF (ABS(XN).LT.EPS) XN = ZERO
+                IF (ABS(XN) < EPS) XN = ZERO
                 LO%XFLUX(I, SIDE + 1) = XN
                 !*             LO%XFLUX(I) = 0.5*(XN+LO%N(I,J,1))
                 !              LO%XFLUX(I) = (T-1.0)/LA%REL_TIME*(XN-LO%N(I,J,1))+LO%N(I,J,1)
@@ -757,8 +757,8 @@ SUBROUTINE ININTERP (LO, LA)
 
     !.....INTERPOLATE FROM 1ST-LEVEL GRID REGION LO TO 2ND-LEVEL REGION LA
     DO I = 1, NUM_GRID
-        IF (LA(I)%LAYSWITCH.EQ.0 .AND. LA(I)%PARENT.EQ.LO%ID) THEN
-            IF (LA(I)%SC_OPTION .EQ. 0) THEN
+        IF (LA(I)%LAYSWITCH == 0 .AND. LA(I)%PARENT == LO%ID) THEN
+            IF (LA(I)%SC_OPTION == 0) THEN
                 CALL CELL_INTERP (LO, LA(I))
             ELSE
                 CALL CELL_INTERP_SC (LO, LA(I))
@@ -768,11 +768,11 @@ SUBROUTINE ININTERP (LO, LA)
     !.....INTERPOLATE FROM 2ND-LEVEL GRID REGION TO ALL SUB-LEVEL GRIDS
     DO L = 2, NUM_GRID + 1
         DO J = 1, NUM_GRID
-            IF (LA(J)%LAYSWITCH.EQ.0 .AND. LA(J)%LEVEL.EQ.L) THEN
+            IF (LA(J)%LAYSWITCH == 0 .AND. LA(J)%LEVEL == L) THEN
                 DO K = 1, NUM_GRID
-                    IF (LA(K)%LAYSWITCH.EQ.0                            &
-                            .AND. LA(K)%PARENT.EQ.LA(J)%ID) THEN
-                        IF (LA(K)%SC_OPTION .EQ. 0) THEN
+                    IF (LA(K)%LAYSWITCH == 0                            &
+                            .AND. LA(K)%PARENT == LA(J)%ID) THEN
+                        IF (LA(K)%SC_OPTION == 0) THEN
                             CALL CELL_INTERP (LA(J), LA(K))
                         ELSE
                             CALL CELL_INTERP_SC (LA(J), LA(K))
@@ -904,8 +904,8 @@ SUBROUTINE CELL_INTERP_SC (LO, LA)
         DO J = 1, LA%NY
             KI = LA%POS(I, J, 1)
             KJ = LA%POS(I, J, 2)
-            IF (KI.GE.1 .AND. KI.LT.LO%NX) THEN
-                IF (KJ.GE.1 .AND. KJ.LT.LO%NY) THEN
+            IF (KI >= 1 .AND. KI < LO%NX) THEN
+                IF (KJ >= 1 .AND. KJ < LO%NY) THEN
                     Z1 = LO%DEFORM(KI, KJ) * LA%CXY(I, J, 1)
                     Z2 = LO%DEFORM(KI + 1, KJ) * LA%CXY(I, J, 2)
                     Z3 = LO%DEFORM(KI, KJ + 1) * LA%CXY(I, J, 3)
@@ -956,7 +956,7 @@ SUBROUTINE EDGE_INTERP_SC (LO, LA)
     DO J = 1, LA%NY
         KI = LA%POS(1, J, 1)
         KJ = LA%POS(1, J, 2)
-        IF (LA%H(I, J) + LA%Z(I, J, 2) .GT. GX) THEN
+        IF (LA%H(I, J) + LA%Z(I, J, 2) >  GX) THEN
             Z1 = LO%M(KI, KJ, 1) * LA%CXY(1, J, 1)
             Z2 = LO%M(KI + 1, KJ, 1) * LA%CXY(1, J, 2)
             Z3 = LO%M(KI, KJ + 1, 1) * LA%CXY(1, J, 3)
@@ -971,7 +971,7 @@ SUBROUTINE EDGE_INTERP_SC (LO, LA)
     DO J = 1, LA%NY
         KI = LA%POS(LA%NX, J, 1)
         KJ = LA%POS(LA%NX, J, 2)
-        IF (LA%H(I, J) + LA%Z(I, J, 2) .GT. GX) THEN
+        IF (LA%H(I, J) + LA%Z(I, J, 2) >  GX) THEN
             Z1 = LO%M(KI, KJ, 1) * LA%CXY(LA%NX, J, 1)
             Z2 = LO%M(KI + 1, KJ, 1) * LA%CXY(LA%NX, J, 2)
             Z3 = LO%M(KI, KJ + 1, 1) * LA%CXY(LA%NX, J, 3)
@@ -986,7 +986,7 @@ SUBROUTINE EDGE_INTERP_SC (LO, LA)
     DO I = 1, LA%NX
         KI = LA%POS(I, 1, 1)
         KJ = LA%POS(I, 1, 2)
-        IF (LA%H(I, J) + LA%Z(I, J, 2) .GT. GX) THEN
+        IF (LA%H(I, J) + LA%Z(I, J, 2) >  GX) THEN
             Z1 = LO%N(KI, KJ, 1) * LA%CXY(I, 1, 1)
             Z2 = LO%N(KI + 1, KJ, 1) * LA%CXY(I, 1, 2)
             Z3 = LO%N(KI, KJ + 1, 1) * LA%CXY(I, 1, 3)
@@ -1001,7 +1001,7 @@ SUBROUTINE EDGE_INTERP_SC (LO, LA)
     DO I = 1, LA%NX
         KI = LA%POS(I, LA%NY, 1)
         KJ = LA%POS(I, LA%NY, 2)
-        IF (LA%H(I, J) + LA%Z(I, J, 2) .GT. GX) THEN
+        IF (LA%H(I, J) + LA%Z(I, J, 2) >  GX) THEN
             Z1 = LO%N(KI, KJ, 1) * LA%CXY(I, LA%NY, 1)
             Z2 = LO%N(KI + 1, KJ, 1) * LA%CXY(I, LA%NY, 2)
             Z3 = LO%N(KI, KJ + 1, 1) * LA%CXY(I, LA%NY, 3)
@@ -1067,23 +1067,23 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
     DO I = IS, IE
         IP1 = I + 1
         DO J = JS, JE
-            IF ((LO%H(I, J).GT.GX) .AND. (LO%H(IP1, J).GT.GX)) THEN
+            IF ((LO%H(I, J) > GX) .AND. (LO%H(IP1, J) > GX)) THEN
                 JM1 = J - 1
                 JP1 = J + 1
-                IF (JM1.LE.1) JM1 = 1
-                IF (JP1.GE.LO%NY) JP1 = LO%NY
+                IF (JM1 <= 1) JM1 = 1
+                IF (JP1 >= LO%NY) JP1 = LO%NY
                 TOT_N = LO%N(I, J, 1) + LO%N(IP1, J, 1) + LO%N(I, JM1, 1)    &
                         + LO%N(IP1, JM1, 1)
                 XM = LO%M(I, J, 1) - LO%R2(I, J) * (LO%Z(IP1, J, 2)        &
                         - LO%Z(I, J, 2)) + LO%R3(I, J) * TOT_N
-                IF (LO%MODSCM .EQ. 0) THEN
+                IF (LO%MODSCM == 0) THEN
                     SCM = LO%R2(I, J) * TWLVTH * ((LO%Z(IP1, JP1, 2)        &
                             - 2 * LO%Z(IP1, J, 2) + LO%Z(IP1, JM1, 2))    &
                             - (LO%Z(I, JP1, 2) - 2 * LO%Z(I, J, 2)        &
                                     + LO%Z(I, JM1, 2)))
                     XM = XM - SCM
                 ENDIF
-                IF (ABS(XM) .LT. EPS) XM = ZERO
+                IF (ABS(XM) < EPS) XM = ZERO
                 LO%M(I, J, 2) = XM
             ELSE
                 LO%M(I, J, 2) = 0.0
@@ -1101,23 +1101,23 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
     DO I = IS, IE
         IP1 = I + 1
         DO J = JS, JE
-            IF ((LO%H(I, J).GT.GX) .AND. (LO%H(IP1, J).GT.GX)) THEN
+            IF ((LO%H(I, J) > GX) .AND. (LO%H(IP1, J) > GX)) THEN
                 JM1 = J - 1
                 JP1 = J + 1
-                IF (JM1.LE.1) JM1 = 1
-                IF (JP1.GE.LO%NY) JP1 = LO%NY
+                IF (JM1 <= 1) JM1 = 1
+                IF (JP1 >= LO%NY) JP1 = LO%NY
                 TOT_N = LO%N(I, J, 1) + LO%N(IP1, J, 1) + LO%N(I, JM1, 1)    &
                         + LO%N(IP1, JM1, 1)
                 XM = LO%M(I, J, 1) - LO%R2(I, J) * (LO%Z(IP1, J, 2)        &
                         - LO%Z(I, J, 2)) + LO%R3(I, J) * TOT_N
-                IF (LO%MODSCM .EQ. 0) THEN
+                IF (LO%MODSCM == 0) THEN
                     SCM = LO%R2(I, J) * TWLVTH * ((LO%Z(IP1, JP1, 2)        &
                             - 2 * LO%Z(IP1, J, 2) + LO%Z(IP1, JM1, 2))    &
                             - (LO%Z(I, JP1, 2) - 2 * LO%Z(I, J, 2)        &
                                     + LO%Z(I, JM1, 2)))
                     XM = XM - SCM
                 ENDIF
-                IF (ABS(XM) .LT. EPS) XM = ZERO
+                IF (ABS(XM) < EPS) XM = ZERO
                 LO%M(I, J, 2) = XM
             ELSE
                 LO%M(I, J, 2) = 0.0
@@ -1135,23 +1135,23 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
     DO J = JS, JE
         JP1 = J + 1
         DO I = IS, IE
-            IF ((LO%H(I, J).GT.GX) .AND. (LO%H(I, JP1).GT.GX)) THEN
+            IF ((LO%H(I, J) > GX) .AND. (LO%H(I, JP1) > GX)) THEN
                 IM1 = I - 1
                 IP1 = I + 1
-                IF (IM1.LE.1) IM1 = 1
-                IF (IP1.GE.LO%NX) IP1 = LO%NX
+                IF (IM1 <= 1) IM1 = 1
+                IF (IP1 >= LO%NX) IP1 = LO%NX
                 TOT_M = LO%M(IM1, J, 1) + LO%M(IM1, JP1, 1) + LO%M(I, J, 1)    &
                         + LO%M(I, JP1, 1)
                 XN = LO%N(I, J, 1) - LO%R4(I, J) * (LO%Z(I, JP1, 2)        &
                         - LO%Z(I, J, 2)) - LO%R5(I, J) * TOT_M
-                IF (LO%MODSCM .EQ. 0) THEN
+                IF (LO%MODSCM == 0) THEN
                     SCM = LO%R4(I, J) * TWLVTH * ((LO%Z(IP1, JP1, 2)        &
                             - 2 * LO%Z(I, JP1, 2) + LO%Z(IM1, JP1, 2))    &
                             - (LO%Z(IP1, J, 2) - 2 * LO%Z(I, J, 2)        &
                                     + LO%Z(IM1, J, 2)))
                     XN = XN - SCM
                 ENDIF
-                IF (ABS(XN) .LT. EPS) XN = ZERO
+                IF (ABS(XN) < EPS) XN = ZERO
                 LO%N(I, J, 2) = XN
             ELSE
                 LO%N(I, J, 2) = 0.0
@@ -1169,23 +1169,23 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
     DO J = JS, JE
         JP1 = J + 1
         DO I = IS, IE
-            IF ((LO%H(I, J).GT.GX) .AND. (LO%H(I, JP1).GT.GX)) THEN
+            IF ((LO%H(I, J) > GX) .AND. (LO%H(I, JP1) > GX)) THEN
                 IM1 = I - 1
                 IP1 = I + 1
-                IF (IM1.LE.1) IM1 = 1
-                IF (IP1.GE.LO%NX) IP1 = LO%NX
+                IF (IM1 <= 1) IM1 = 1
+                IF (IP1 >= LO%NX) IP1 = LO%NX
                 TOT_M = LO%M(IM1, J, 1) + LO%M(IM1, JP1, 1) + LO%M(I, J, 1)    &
                         + LO%M(I, JP1, 1)
                 XN = LO%N(I, J, 1) - LO%R4(I, J) * (LO%Z(I, JP1, 2)        &
                         - LO%Z(I, J, 2)) - LO%R5(I, J) * TOT_M
-                IF (LO%MODSCM .EQ. 0) THEN
+                IF (LO%MODSCM == 0) THEN
                     SCM = LO%R4(I, J) * TWLVTH * ((LO%Z(IP1, JP1, 2)        &
                             - 2 * LO%Z(I, JP1, 2) + LO%Z(IM1, JP1, 2))    &
                             - (LO%Z(IP1, J, 2) - 2 * LO%Z(I, J, 2)        &
                                     + LO%Z(IM1, J, 2)))
                     XN = XN - SCM
                 ENDIF
-                IF (ABS(XN) .LT. EPS) XN = ZERO
+                IF (ABS(XN) < EPS) XN = ZERO
                 LO%N(I, J, 2) = XN
             ELSE
                 LO%N(I, J, 2) = 0.0
@@ -1202,7 +1202,7 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
         KJ = LA%POS(1, J, 2)
         XM1 = 0.0
         XM2 = 0.0
-        IF (LA%H(1, J) + LA%Z(1, J, 2) .GT. GX) THEN
+        IF (LA%H(1, J) + LA%Z(1, J, 2) >  GX) THEN
             Z1 = LO%M(KI, KJ, 1) * LA%CXY(1, J, 1)
             Z2 = LO%M(KI + 1, KJ, 1) * LA%CXY(1, J, 2)
             Z3 = LO%M(KI, KJ + 1, 1) * LA%CXY(1, J, 3)
@@ -1225,7 +1225,7 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
         KJ = LA%POS(LA%NX, J, 2)
         XM1 = 0.0
         XM2 = 0.0
-        IF (LA%H(LA%NX, J) + LA%Z(LA%NX, J, 2) .GT. GX) THEN
+        IF (LA%H(LA%NX, J) + LA%Z(LA%NX, J, 2) >  GX) THEN
             Z1 = LO%M(KI, KJ, 1) * LA%CXY(LA%NX, J, 1)
             Z2 = LO%M(KI + 1, KJ, 1) * LA%CXY(LA%NX, J, 2)
             Z3 = LO%M(KI, KJ + 1, 1) * LA%CXY(LA%NX, J, 3)
@@ -1248,7 +1248,7 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
         KJ = LA%POS(I, 1, 2)
         YN1 = 0.0
         YN2 = 0.0
-        IF (LA%H(I, 1) + LA%Z(I, 1, 2) .GT. GX) THEN
+        IF (LA%H(I, 1) + LA%Z(I, 1, 2) >  GX) THEN
             Z1 = LO%N(KI, KJ, 1) * LA%CXY(I, 1, 1)
             Z2 = LO%N(KI + 1, KJ, 1) * LA%CXY(I, 1, 2)
             Z3 = LO%N(KI, KJ + 1, 1) * LA%CXY(I, 1, 3)
@@ -1271,7 +1271,7 @@ SUBROUTINE NEWQ_SC (LO, LA, T)
         KJ = LA%POS(I, LA%NY, 2)
         YN1 = 0.0
         YN2 = 0.0
-        IF (LA%H(I, LA%NY) + LA%Z(I, LA%NY, 2) .GT. GX) THEN
+        IF (LA%H(I, LA%NY) + LA%Z(I, LA%NY, 2) >  GX) THEN
             Z1 = LO%N(KI, KJ, 1) * LA%CXY(I, LA%NY, 1)
             Z2 = LO%N(KI + 1, KJ, 1) * LA%CXY(I, LA%NY, 2)
             Z3 = LO%N(KI, KJ + 1, 1) * LA%CXY(I, LA%NY, 3)
@@ -1333,7 +1333,7 @@ SUBROUTINE JNZ_SC (LO, LA)
 
     DO I = 1, LA%NX
         DO J = 1, LA%NY
-            IF (LA%H(I, J) + LA%Z(I, J, 2) .GT. GX) THEN
+            IF (LA%H(I, J) + LA%Z(I, J, 2) >  GX) THEN
                 KI = LA%POS(I, J, 1)
                 KJ = LA%POS(I, J, 2)
                 Z(KI, KJ) = Z(KI, KJ) + LA%Z(I, J, 2)
@@ -1344,7 +1344,7 @@ SUBROUTINE JNZ_SC (LO, LA)
 
     DO I = LA%CORNERS(1), LA%CORNERS(2)
         DO J = LA%CORNERS(3), LA%CORNERS(4)
-            IF (S(I, J) .GT. HALF) THEN
+            IF (S(I, J) >  HALF) THEN
                 LO%Z(I, J, 2) = Z(I, J) / S(I, J)
             ENDIF
         ENDDO
