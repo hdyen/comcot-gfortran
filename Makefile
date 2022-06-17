@@ -70,7 +70,7 @@ boundaries.o: boundaries.f90
 	$(FC) -c $(FC_FLAGS) boundaries.f90
 
 all_grids.o: all_grids.f90
-	$(FC) -c $(FC_FLAGS) all_grids.f90
+	$(FC) -c -ffree-line-length-none $(FC_FLAGS) all_grids.f90
 
 hotstart.o: hotstart.f90
 	$(FC) -c $(FC_FLAGS) hotstart.f90
