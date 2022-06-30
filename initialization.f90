@@ -91,41 +91,41 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     JOB = DUMP
 
     POS = INDEX(LINE1, ':')
-    IF (POS>0) THEN
+    IF (POS > 0) THEN
         BCI_INFO%FNAMEH = TRIM(LINE1(POS + 1:200))
     ELSE
         BCI_INFO%FNAMEH = ' '
     ENDIF
     LINE1 = ''
     POS = INDEX(LINE2, ':')
-    IF (POS>0) THEN
+    IF (POS > 0) THEN
         BCI_INFO%FNAMEU = TRIM(LINE2(POS + 1:200))
     ELSE
         BCI_INFO%FNAMEU = ' '
     ENDIF
     LINE2 = ''
     POS = INDEX(LINE3, ':')
-    IF (POS>0) THEN
+    IF (POS > 0) THEN
         BCI_INFO%FNAMEV = TRIM(LINE3(POS + 1:200))
     ELSE
         BCI_INFO%FNAMEV = ' '
     ENDIF
     LINE3 = ''
 
-    IF (BC_TYPE.EQ.3) INI_SURF = 999
+    IF (BC_TYPE == 3) INI_SURF = 999
 
     !----------------------------------------
     !  READING PARAMETERS FOR FAULT MODEL
     !----------------------------------------
-    IF (INI_SURF.EQ.0 .OR. INI_SURF.EQ.4) THEN
+    IF (INI_SURF == 0 .OR. INI_SURF == 4) THEN
         WRITE (*, *) '    READING PARAMETERS FOR FAULT MODEL......'
     ENDIF
     READ (666, '(3/)')
     READ (666, '(49X,I30)')   FAULT_INFO(1)%NUM_FLT    ! TOTAL NO. OF FAULT PLANES
-    IF (INI_SURF.EQ.0 .OR. INI_SURF.EQ.4) THEN
-        IF (FAULT_INFO(1)%NUM_FLT.GT.1) THEN
+    IF (INI_SURF == 0 .OR. INI_SURF == 4) THEN
+        IF (FAULT_INFO(1)%NUM_FLT > 1) THEN
             WRITE (*, *) '    MULTI-FAULTING CONFIGURATION IS IMPLEMENTED'
-            IF (FAULT_INFO(1)%NUM_FLT.NE.999) THEN
+            IF (FAULT_INFO(1)%NUM_FLT /= 999) THEN
                 K = 1
                 WRITE (*, *) '    READING PARAMETERS FOR FAULT SEGMENT', K
             ENDIF
@@ -148,7 +148,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     READ (666, '(49X,I30)')   FAULT_INFO(1)%FS            !  FORMAT OF DEFORMATION FILE:0-COMCOT;1-MOST;2-XYZ
 
     POS = INDEX(LINE, ':')
-    IF (POS>0) THEN
+    IF (POS > 0) THEN
         FAULT_INFO(1)%DEFORM_NAME = TRIM(LINE(POS + 1:200))
     ELSE
         FAULT_INFO(1)%DEFORM_NAME = 'ini_surface.dat'
@@ -156,12 +156,12 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     LINE = ''
     SN = SIN(RAD_DEG * FAULT_INFO(1)%DL)
     CS = COS(RAD_DEG * FAULT_INFO(1)%DL)
-    IF (ABS(SN) .LT. EPS) FAULT_INFO(1)%DL = FAULT_INFO(1)%DL + EPS
-    IF (ABS(CS) .LT. EPS) FAULT_INFO(1)%DL = FAULT_INFO(1)%DL + EPS
+    IF (ABS(SN) < EPS) FAULT_INFO(1)%DL = FAULT_INFO(1)%DL + EPS
+    IF (ABS(CS) < EPS) FAULT_INFO(1)%DL = FAULT_INFO(1)%DL + EPS
     ! READING PARAMETERS FOR OTHER FAULT PLANES IF > 1
-    IF (INI_SURF.EQ.0 .OR. INI_SURF.EQ.4) THEN
-        IF (FAULT_INFO(1)%NUM_FLT.GT.1) THEN
-            IF (FAULT_INFO(1)%NUM_FLT.NE.999) THEN
+    IF (INI_SURF == 0 .OR. INI_SURF == 4) THEN
+        IF (FAULT_INFO(1)%NUM_FLT > 1) THEN
+            IF (FAULT_INFO(1)%NUM_FLT /= 999) THEN
                 CALL GET_MULTIFAULT_PARAMETERS (LO, FAULT_INFO)
             ELSE
                 CALL READ_MULTIFAULT_DATA (LO, FAULT_INFO)
@@ -172,7 +172,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     !----------------------------------------
     !  READING PARAMETERS FOR WAVE MAKER
     !----------------------------------------
-    IF (INI_SURF .EQ. 2) THEN
+    IF (INI_SURF == 2) THEN
         WRITE (*, *) '    READING PARAMETERS FOR WAVE MAKER......'
     ENDIF
     READ (666, '(3/)')
@@ -184,7 +184,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
 
     ! OBTAIN FILENAME OF GIVEN PROFILE
     POS = INDEX(LINE, ':')
-    IF (POS>0) THEN
+    IF (POS > 0) THEN
         WAVE_INFO%FORM_NAME = TRIM(LINE(POS + 1:200))
     ELSE
         WAVE_INFO%FORM_NAME = 'fse.dat'
@@ -196,7 +196,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     !-----------------------------------------
     !READING PARAMETERS FOR LAND SLIDE MODEL
     !----------------------------------------
-    IF (INI_SURF .EQ. 3) THEN
+    IF (INI_SURF == 3) THEN
         WRITE (*, *) '    READING PARAMETERS FOR LAND SLIDE MODEL......'
     ENDIF
     READ (666, '(3/)')
@@ -208,7 +208,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     READ (666, '(49X,I30)')     LANDSLIDE_INFO%OPTION   !  FORMAT OF LANDSLIDE:0-OLD COMCOT;1-XYT;2-FUNCTION
 
     POS = INDEX(LINE, ':')
-    IF (POS>0) THEN
+    IF (POS > 0) THEN
         LANDSLIDE_INFO%FILENAME = TRIM(LINE(POS + 1:200))
     ENDIF
     !	  WRITE(*,*) LO%DEPTH_NAME
@@ -238,7 +238,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     READ (666, '(49X,I30)')    LO%PARENT                !  ID OF IT'S PARENT GRID
 
     POS = INDEX(LINE, ':')
-    IF (POS>0) THEN
+    IF (POS > 0) THEN
         LO%DEPTH_NAME = TRIM(LINE(POS + 1:200))
         !*	     TMP = TRIM(LINE(POS+1:200))
         !*	     POS = INDEX(TRIM(TMP),' ',BACK=.TRUE.)
@@ -254,17 +254,17 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
 
     !     TIDAL LEVEL CORRECTION CONTRAL
     LO%TIDE_LEVEL = 0.0        ! RUN AT MEAN SEA LEVEL
-    IF (START_TYPE.EQ.20 .OR. START_TYPE.EQ.21) THEN
-        IF (START_TYPE.EQ.20) START_TYPE = 0
-        IF (START_TYPE.EQ.21) START_TYPE = 1
+    IF (START_TYPE == 20 .OR. START_TYPE == 21) THEN
+        IF (START_TYPE == 20) START_TYPE = 0
+        IF (START_TYPE == 21) START_TYPE = 1
         WRITE (*, *) '>>>>PLEASE INPUT TIDAL LEVEL CORRECTION TO MSL:'
         READ *, LO%TIDE_LEVEL
     ENDIF
 
     !	  GENERATE 'SQUARE' GRIDS FOR DISPERSION-IMPROVED SCHEME
-    IF (LO%LAYGOV.GE.2) LO%PARENT = 0
+    IF (LO%LAYGOV >= 2) LO%PARENT = 0
     LO%DIM = 2
-    IF (BC_TYPE.EQ.9) LO%DIM = 1
+    IF (BC_TYPE == 9) LO%DIM = 1
     !*	  LO%PARENT = -1
     LO%H_LIMIT = H_LIMIT
     LO%INI_SWITCH = INI_SURF
@@ -272,7 +272,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     LO%UPZ = .TRUE.
     LO%SC_OPTION = 0
 
-    IF (LO%LAYCORD .EQ. 0) THEN
+    IF (LO%LAYCORD == 0) THEN
         LO%SOUTH_LAT = LO%Y_START
     ELSE
         LO%SOUTH_LAT = FAULT_INFO(1)%YO
@@ -284,7 +284,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
 
     START_STEP = NINT(START_TIME / LO%DT)
 
-    IF (LO%LAYCORD.EQ.0) THEN
+    IF (LO%LAYCORD == 0) THEN
         FAULT_INFO(1)%YO = LO%Y_START
         FAULT_INFO(1)%XO = LO%X_START
     ENDIF
@@ -315,7 +315,7 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
         READ (666, '(49X,I30)')    LA(I)%PARENT            !  ID OF ITS PARENT GRID LAYER
 
         POS = INDEX(LINE, ':')
-        IF (POS>0) THEN
+        IF (POS > 0) THEN
             LA(I)%DEPTH_NAME = TRIM(LINE(POS + 1:200))
         ELSE
             WRITE (FNAME, 1) LA(I)%ID
@@ -330,14 +330,14 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
         LA(I)%INI_SWITCH = INI_SURF
         LA(I)%BC_TYPE = BC_TYPE
         LA(I)%DIM = 2
-        IF (BC_TYPE .EQ. 9) LA(I)%DIM = 1
+        IF (BC_TYPE == 9) LA(I)%DIM = 1
         LA(I)%UPZ = .TRUE.  ! UPZ=.TRUE.: SAME COORDINATES (DEFAULT); .FALSE. DIFFERENT COORDINATES DEFAULT
         LA(I)%SC_OPTION = 0
-        IF (LA(I)%LAYSWITCH .EQ. 9) THEN
+        IF (LA(I)%LAYSWITCH == 9) THEN
             LA(I)%UPZ = .FALSE.
             LA(I)%LAYSWITCH = 0
         ENDIF
-        IF (LA(I)%LAYSWITCH .EQ. 0) THEN
+        IF (LA(I)%LAYSWITCH == 0) THEN
             WRITE (*, *) '    READING PARAMETERS FOR GRID LAYER ID', LA(I)%ID
         ENDIF
     ENDDO
@@ -348,19 +348,19 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     !DETERMINE THE NUMBER OF ITS CHILD GRID LAYERS
     COUNT = 0
     DO I = 1, NUM_GRID
-        IF (LA(I)%LAYSWITCH.EQ.0 .and. LA(I)%PARENT.EQ.LO%ID) THEN
+        IF (LA(I)%LAYSWITCH == 0 .and. LA(I)%PARENT == LO%ID) THEN
             COUNT = COUNT + 1
         ENDIF
     ENDDO
     LO%NUM_CHILD = COUNT
     CALL ALLOC(LO, 1)
     ! READ FRICTION COEF. DATA FROM FILE
-    IF (LO%FRIC_SWITCH .EQ. 2) CALL READ_FRIC_COEF (LO)
+    IF (LO%FRIC_SWITCH == 2) CALL READ_FRIC_COEF (LO)
 
     ! MATCH 2ND-LEVEL GRIDS WITH 1ST-LEVEL GRID
     DO I = 1, NUM_GRID
-        IF (LA(I)%LAYSWITCH.EQ.0 .AND. LA(I)%PARENT.EQ.LO%ID) THEN
-            IF (LO%LAYCORD.EQ.0 .AND. LA(I)%LAYCORD.EQ.1) THEN
+        IF (LA(I)%LAYSWITCH == 0 .AND. LA(I)%PARENT == LO%ID) THEN
+            IF (LO%LAYCORD == 0 .AND. LA(I)%LAYCORD == 1) THEN
                 !SC_OPTION = 0: TRADITIONAL COUPLING SCHEME
                 !SC_OPTION = 1: IMPROVED COUPLING SCHEME
                 LA(I)%SC_OPTION = 1
@@ -372,12 +372,12 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
             CALL ALLOC(LA(I), 2)
             LA(I)%DT = LO%DT / 2.0        !TENTATIVE VALUE
             ! READ FRICTION COEF. DATA FROM FILE
-            IF (LA(I)%FRIC_SWITCH .EQ. 2) CALL READ_FRIC_COEF (LA(I))
+            IF (LA(I)%FRIC_SWITCH == 2) CALL READ_FRIC_COEF (LA(I))
             !DETERMINE THE NUMBER OF ITS CHILD GRID LAYERS
             COUNT = 0
             DO K = 1, NUM_GRID
-                IF (LA(K)%LAYSWITCH.EQ.0 .AND.                        &
-                        LA(K)%PARENT.EQ.LA(I)%ID) THEN
+                IF (LA(K)%LAYSWITCH == 0 .AND.                        &
+                        LA(K)%PARENT == LA(I)%ID) THEN
                     COUNT = COUNT + 1
                 ENDIF
             ENDDO
@@ -389,12 +389,12 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
     NUM_LEVEL = NUM_GRID + 1
     DO KL = 2, NUM_LEVEL
         DO I = 1, NUM_GRID
-            IF (LA(I)%LAYSWITCH.EQ.0 .AND. LA(I)%LEVEL.EQ.KL) THEN
+            IF (LA(I)%LAYSWITCH == 0 .AND. LA(I)%LEVEL == KL) THEN
                 DO J = 1, NUM_GRID
-                    IF (LA(J)%LAYSWITCH.EQ.0 .AND.                    &
-                            LA(J)%PARENT.EQ.LA(I)%ID) THEN
-                        IF (LA(I)%LAYCORD.EQ.0 .AND.                    &
-                                LA(J)%LAYCORD.EQ.1) THEN
+                    IF (LA(J)%LAYSWITCH == 0 .AND.                    &
+                            LA(J)%PARENT == LA(I)%ID) THEN
+                        IF (LA(I)%LAYCORD == 0 .AND.                    &
+                                LA(J)%LAYCORD == 1) THEN
                             !SC_OPTION = 0: TRADITIONAL COUPLING SCHEME
                             !SC_OPTION = 1: IMPROVED COUPLING SCHEME
                             LA(J)%SC_OPTION = 1
@@ -406,14 +406,14 @@ SUBROUTINE READ_CONFIG (LO, LA, TEND, TMIN_INV, INI_SURF, &
                         CALL ALLOC(LA(J), KL + 1)
                         LA(J)%DT = LA(I)%DT / 2.0        !TENTATIVE VALUE
                         !READ FRICTION COEF. DATA FROM FILE
-                        IF (LA(J)%FRIC_SWITCH .EQ. 2) THEN
+                        IF (LA(J)%FRIC_SWITCH == 2) THEN
                             CALL READ_FRIC_COEF (LA(J))
                         ENDIF
                         !DETERMINE THE NUMBER OF ITS CHILD GRID LAYERS
                         COUNT = 0
                         DO K = 1, NUM_GRID
-                            IF (LA(K)%LAYSWITCH.EQ.0 .AND.                &
-                                    LA(K)%PARENT.EQ.LA(J)%ID) THEN
+                            IF (LA(K)%LAYSWITCH == 0 .AND.                &
+                                    LA(K)%PARENT == LA(J)%ID) THEN
                                 COUNT = COUNT + 1
                             ENDIF
                         ENDDO
@@ -557,7 +557,7 @@ SUBROUTINE GET_MULTIFAULT_PARAMETERS (LO, FLT)
         READ (23, '(A)')         LINE                !  NAME OF DEFORMATION DATA FILE
         READ (23, '(49X,I30)')   FLT(K)%FS            !  FORMAT OF DEFORMATION DATA FILE: 0-OLD COMCOT FORMAT;1-MOST;2-XYZ;
         POS = INDEX(LINE, ':')
-        IF (POS>0) THEN
+        IF (POS > 0) THEN
             FLT(K)%DEFORM_NAME = TRIM(LINE(POS + 1:200))
         ELSE
             FLT(K)%DEFORM_NAME = 'ini_surface.dat'
@@ -565,10 +565,10 @@ SUBROUTINE GET_MULTIFAULT_PARAMETERS (LO, FLT)
         LINE = ''
         SN = SIN(RAD_DEG * FLT(K)%DL)
         CS = COS(RAD_DEG * FLT(K)%DL)
-        IF (ABS(SN) .LT. EPS) FLT(K)%DL = FLT(K)%DL + GX
-        IF (ABS(CS) .LT. EPS) FLT(K)%DL = FLT(K)%DL + GX
-        !	     IF (SN .EQ. 0.0) FLT(K)%DL = FLT(K)%DL+EPS
-        !	     IF (CS .EQ. 0.0) FLT(K)%DL = FLT(K)%DL+EPS
+        IF (ABS(SN) < EPS) FLT(K)%DL = FLT(K)%DL + GX
+        IF (ABS(CS) < EPS) FLT(K)%DL = FLT(K)%DL + GX
+        !	     IF (SN == 0.0) FLT(K)%DL = FLT(K)%DL+EPS
+        !	     IF (CS == 0.0) FLT(K)%DL = FLT(K)%DL+EPS
         FLT(K)%NUM_FLT = FLT(1)%NUM_FLT
         FLT(K)%XO = FLT(1)%XO
         FLT(K)%YO = FLT(1)%YO
@@ -635,18 +635,18 @@ SUBROUTINE READ_MULTIFAULT_DATA (LO, FLT)
         READ (23, *) FLT(K)%T0, FLT(K)%X0, FLT(K)%Y0, FLT(K)%L, &
                 FLT(K)%W, FLT(K)%HH, FLT(K)%TH, FLT(K)%DL, &
                 FLT(K)%RD, FLT(K)%D
-        IF (K.EQ.1) THEN
+        IF (K == 1) THEN
             SN = SIN(RAD_DEG * FLT(K)%DL)
             CS = COS(RAD_DEG * FLT(K)%DL)
-            IF (ABS(SN) .LT. EPS) FLT(K)%DL = FLT(K)%DL + GX
-            IF (ABS(CS) .LT. EPS) FLT(K)%DL = FLT(K)%DL + GX
+            IF (ABS(SN) < EPS) FLT(K)%DL = FLT(K)%DL + GX
+            IF (ABS(CS) < EPS) FLT(K)%DL = FLT(K)%DL + GX
         ENDIF
-        IF (K.GT.1) THEN
+        IF (K > 1) THEN
             FLT(K)%SWITCH = FLT(1)%SWITCH
             SN = SIN(RAD_DEG * FLT(K)%DL)
             CS = COS(RAD_DEG * FLT(K)%DL)
-            IF (ABS(SN) .LT. EPS) FLT(K)%DL = FLT(K)%DL + GX
-            IF (ABS(CS) .LT. EPS) FLT(K)%DL = FLT(K)%DL + GX
+            IF (ABS(SN) < EPS) FLT(K)%DL = FLT(K)%DL + GX
+            IF (ABS(CS) < EPS) FLT(K)%DL = FLT(K)%DL + GX
             FLT(K)%NUM_FLT = FLT(1)%NUM_FLT
             FLT(K)%DEFORM_NAME = FLT(1)%DEFORM_NAME
             FLT(K)%FS = FLT(1)%FS
@@ -767,7 +767,7 @@ SUBROUTINE DX_CALC (LO)
     LO%REL_TIME = 1
     !.....IF THE CARTESIAN COORDINATE IS ADOPTED,
     !     CALCULATE THE GRID DIMENSION, X AND Y COORDINATES;
-    IF (LO%LAYCORD.EQ.1) THEN
+    IF (LO%LAYCORD == 1) THEN
         LO%NX = NINT((LO%X_END - LO%X_START) / LO%DX) + 1
         LO%NY = NINT((LO%Y_END - LO%Y_START) / LO%DY) + 1
         ALLOCATE(LO%X(LO%NX))
@@ -783,7 +783,7 @@ SUBROUTINE DX_CALC (LO)
         LO%DEL_X(:) = LO%DX
         LO%DEL_Y(:) = LO%DY
         !SPHERICAL COORDINATES, FOR FACTS INPUT
-        IF (LO%BC_TYPE.EQ.3) THEN
+        IF (LO%BC_TYPE == 3) THEN
             ALLOCATE(LO%CXY(LO%NX, LO%NY, 2))
             LO%CXY = 0.0
             DO I = 1, LO%NX
@@ -807,11 +807,11 @@ SUBROUTINE DX_CALC (LO)
     !		  1 - CREATE A 'NORMAL' GRID CELL IN SPHERICAL COORDINATE,
     !			  I.E., DX = DY IN ARC MINUTES, BUT LENGTH ARE DIFFERENT;
     GRID_SWITCH = 0
-    IF (LO%PARENT .EQ. -1) GRID_SWITCH = 1 !FOR TEST PURPOSE
+    IF (LO%PARENT == -1) GRID_SWITCH = 1 !FOR TEST PURPOSE
 
-    IF (LO%LAYCORD .EQ. 0) THEN
+    IF (LO%LAYCORD == 0) THEN
         ! WHEN SQUARE GRID IS REQUIRED
-        IF (GRID_SWITCH.EQ.0) THEN
+        IF (GRID_SWITCH == 0) THEN
             !CONVERT MINUTES TO DEGREES
             DX = LO%DX / 60.0
             DY = LO%DY / 60.0
@@ -831,7 +831,7 @@ SUBROUTINE DX_CALC (LO)
 
             K = 1
             YTMP(1) = LO%Y_START
-            DO WHILE (YTMP(K).LE.LO%Y_END)
+            DO WHILE (YTMP(K) <= LO%Y_END)
                 ANG_K = YTMP(K) * RAD_DEG
                 DEL_Y(K) = DX * COS(ANG_K)
                 DY = DX * COS(ANG_K + 0.5 * DEL_Y(K) * RAD_DEG)
@@ -919,20 +919,20 @@ SUBROUTINE SUBGRID_MATCHING (LO, LA)
     JE = LO%NY - 1
 
     DO K = IS, IE
-        IF (LA%X_START.GE.(LO%X(K - 1) + LO%X(K)) / 2.0 .AND.            &
-                LA%X_START.LT.(LO%X(K) + LO%X(K + 1)) / 2.0) LA%CORNERS(1) = K + 1
-        IF (LA%X_END.GE.(LO%X(K - 1) + LO%X(K)) / 2.0 .AND.                &
-                LA%X_END.LT.(LO%X(K) + LO%X(K + 1)) / 2.0) LA%CORNERS(2) = K - 1
+        IF (LA%X_START >= (LO%X(K - 1) + LO%X(K)) / 2.0 .AND.            &
+                LA%X_START < (LO%X(K) + LO%X(K + 1)) / 2.0) LA%CORNERS(1) = K + 1
+        IF (LA%X_END >= (LO%X(K - 1) + LO%X(K)) / 2.0 .AND.                &
+                LA%X_END < (LO%X(K) + LO%X(K + 1)) / 2.0) LA%CORNERS(2) = K - 1
     ENDDO
     DO K = JS, JE
-        IF (LA%Y_START.GE.(LO%Y(K - 1) + LO%Y(K)) / 2.0 .AND.            &
-                LA%Y_START.LT.(LO%Y(K) + LO%Y(K + 1)) / 2.0) LA%CORNERS(3) = K + 1
-        IF (LA%Y_END.GE.(LO%Y(K - 1) + LO%Y(K)) / 2.0 .AND.                &
-                LA%Y_END.LT.(LO%Y(K) + LO%Y(K + 1)) / 2.0) LA%CORNERS(4) = K - 1
+        IF (LA%Y_START >= (LO%Y(K - 1) + LO%Y(K)) / 2.0 .AND.            &
+                LA%Y_START < (LO%Y(K) + LO%Y(K + 1)) / 2.0) LA%CORNERS(3) = K + 1
+        IF (LA%Y_END >= (LO%Y(K - 1) + LO%Y(K)) / 2.0 .AND.                &
+                LA%Y_END < (LO%Y(K) + LO%Y(K + 1)) / 2.0) LA%CORNERS(4) = K - 1
     ENDDO
 
     !.....DETERMINE THE DIMENSION OF CHILD GRID LAYER
-    IF (LO%LAYCORD .EQ. LA%LAYCORD) THEN
+    IF (LO%LAYCORD == LA%LAYCORD) THEN
         LA%NX = (LA%CORNERS(2) - LA%CORNERS(1) + 1) * LA%REL_SIZE + 1
         LA%NY = (LA%CORNERS(4) - LA%CORNERS(3) + 1) * LA%REL_SIZE + 1
         ALLOCATE(LA%X(LA%NX))
@@ -947,7 +947,7 @@ SUBROUTINE SUBGRID_MATCHING (LO, LA)
 
     !DETERMINE GRID SIZE AND X,Y COORDINATES OF CHILD GRID LAYER: LA
     !WHEN BOTH LO AND LA ADOPT CARTESIAN COORDINATES
-    IF (LO%LAYCORD.EQ.1 .AND. LA%LAYCORD.EQ.1) THEN
+    IF (LO%LAYCORD == 1 .AND. LA%LAYCORD == 1) THEN
         LA%DX = LO%DX / DBLE(LA%REL_SIZE)
         LA%DY = LO%DY / DBLE(LA%REL_SIZE)
         XS = 0.5 * (LO%X(LA%CORNERS(1)) + LO%X(LA%CORNERS(1) - 1)) - LA%DX / 2.0
@@ -963,8 +963,8 @@ SUBROUTINE SUBGRID_MATCHING (LO, LA)
     ENDIF
 
     !WHEN BOTH LO AND LA USE SPHERICAL COORDINATES
-    IF (LO%LAYCORD .EQ. 0) THEN
-        IF (LA%LAYCORD .EQ. 0) THEN
+    IF (LO%LAYCORD == 0) THEN
+        IF (LA%LAYCORD == 0) THEN
             LA%DX = LO%DX / DBLE(LA%REL_SIZE)
             LA%DY = LO%DY / DBLE(LA%REL_SIZE)
             LA%DEL_X(:) = LA%DX
@@ -997,8 +997,8 @@ SUBROUTINE SUBGRID_MATCHING (LO, LA)
     ENDIF
 
     !WHEN LO USES SPHERICAL COORDINATES AND LA USES CARTESIAN COORDINATES
-    IF (LO%LAYCORD .EQ. 0) THEN
-        IF (LA%LAYCORD .EQ. 1) THEN
+    IF (LO%LAYCORD == 0) THEN
+        IF (LA%LAYCORD == 1) THEN
             !GRID SIZE IN DEGREES
             DX = LO%DX / 60.0 / DBLE(LA%REL_SIZE)
             DY = LO%DEL_Y(LA%CORNERS(3)) / 60.0 / DBLE(LA%REL_SIZE)
@@ -1058,7 +1058,7 @@ SUBROUTINE SUBGRID_MATCHING (LO, LA)
             !*BETWEEN LO AND LA
             !***********DETERMINE IJ POSITION OF LAYER LA GRIDS IN LAYER LO*********
             !***********FOR INTERPOLATION FROM LO TO LA ***
-            IF (LA%SC_OPTION .EQ. 1) THEN
+            IF (LA%SC_OPTION == 1) THEN
                 ALLOCATE(LA%POS(LA%NX, LA%NY, 2))
                 ALLOCATE(LA%CXY(LA%NX, LA%NY, 4))
                 LA%POS = 0
@@ -1082,21 +1082,21 @@ SUBROUTINE SUBGRID_MATCHING (LO, LA)
                         KI = 0
                         KJ = 0
                         DO K = 2, LO%NX - 1
-                            IF (LON.GE.LO%X(K) .AND. LON.LT.LO%X(K + 1)) KI = K
+                            IF (LON >= LO%X(K) .AND. LON < LO%X(K + 1)) KI = K
                         ENDDO
                         DO K = 2, LO%NY - 1
-                            IF (LAT.GE.LO%Y(K) .AND. LAT.LT.LO%Y(K + 1)) KJ = K
+                            IF (LAT >= LO%Y(K) .AND. LAT < LO%Y(K + 1)) KJ = K
                         ENDDO
                         LA%POS(I, J, 1) = KI
                         LA%POS(I, J, 2) = KJ
 
-                        IF (KI.GT.IMAX) IMAX = KI
-                        IF (KI.LT.IMIN) IMIN = KI
-                        IF (KJ.GT.JMAX) JMAX = KJ
-                        IF (KJ.LT.JMIN) JMIN = KJ
+                        IF (KI > IMAX) IMAX = KI
+                        IF (KI < IMIN) IMIN = KI
+                        IF (KJ > JMAX) JMAX = KJ
+                        IF (KJ < JMIN) JMIN = KJ
 
-                        IF (KI.GE.1 .AND. KI.LT.LO%NX) THEN
-                            IF (KJ.GE.1 .AND. KJ.LT.LO%NY) THEN
+                        IF (KI >= 1 .AND. KI < LO%NX) THEN
+                            IF (KJ >= 1 .AND. KJ < LO%NY) THEN
                                 DELTA_X = LO%X(KI + 1) - LO%X(KI)
                                 DELTA_Y = LO%Y(KJ + 1) - LO%Y(KJ)
                                 CX = (LON - LO%X(KI)) / DELTA_X
@@ -1163,11 +1163,11 @@ SUBROUTINE CR_CHECK (LO, LA)
     !.....CHECK COURANT CONDITION FOR 1ST-LEVEL GRIDS
     DO I = 1, LO%NX
         DO J = 1, LO%NY
-            IF (LO%H(I, J) .GT. H_MAX) H_MAX = LO%H(I, J)
+            IF (LO%H(I, J) > H_MAX) H_MAX = LO%H(I, J)
         ENDDO
     ENDDO
 
-    IF (LO%LAYCORD .EQ. 0) THEN
+    IF (LO%LAYCORD == 0) THEN
         !CONVERT TO ARC LENGTH (M) IF SPHERICAL COORD.
         LAT_MAX = AMAX1(ABS(LO%Y(1)), ABS(LO%Y(LO%NY))) * RAD_DEG
         DX = R_EARTH * COS(LAT_MAX) * (LO%DX * RAD_MIN)
@@ -1179,19 +1179,19 @@ SUBROUTINE CR_CHECK (LO, LA)
 
     DEL_X = AMIN1(DX, DY) !FIND THE SMALLER BETWEEN DX AND DY
 
-    IF (LO%LAYSWITCH .EQ. 0) THEN
+    IF (LO%LAYSWITCH == 0) THEN
         CR = LO%DT / (DEL_X / SQRT(GRAV * H_MAX))
         CR_LIMIT = 0.5
-        IF (LO%LAYGOV.EQ.1 .OR. LO%LAYGOV.EQ.3) CR_LIMIT = 0.35
-        IF (CR .GT. CR_LIMIT) THEN
+        IF (LO%LAYGOV == 1 .OR. LO%LAYGOV == 3) CR_LIMIT = 0.35
+        IF (CR > CR_LIMIT) THEN
             WRITE (*, *) '       WARNING: CR TOO LARGE, DT ADJUSTED!'
             DT = CR_LIMIT * DEL_X / SQRT(GRAV * H_MAX)
         ENDIF
-        IF (DT.LE.LO%DT) LO%DT = DT
+        IF (DT <= LO%DT) LO%DT = DT
     ENDIF
 
     !.....ASSIGN DEPENDENT VARIABLES
-    IF (LO%LAYCORD.EQ.1) THEN
+    IF (LO%LAYCORD == 1) THEN
         LO%RX = LO%DT / LO%DX
         LO%RY = LO%DT / LO%DY
         LO%GRX = GRAV * LO%RX
@@ -1200,14 +1200,14 @@ SUBROUTINE CR_CHECK (LO, LA)
 
     !.....CHECK COURANT CONDITION FOR 2ND-LEVEL GRIDS
     DO K = 1, NUM_GRID
-        IF (LA(K)%LAYSWITCH.EQ.0 .AND. LA(K)%PARENT.EQ.LO%ID) THEN
+        IF (LA(K)%LAYSWITCH == 0 .AND. LA(K)%PARENT == LO%ID) THEN
             H_MAX = GX
             DO I = 1, LA(K)%NX
                 DO J = 1, LA(K)%NY
-                    IF (LA(K)%H(I, J) .GT. H_MAX) H_MAX = LA(K)%H(I, J)
+                    IF (LA(K)%H(I, J) > H_MAX) H_MAX = LA(K)%H(I, J)
                 ENDDO
             ENDDO
-            IF (LA(K)%LAYCORD .EQ. 0) THEN
+            IF (LA(K)%LAYCORD == 0) THEN
                 !CONVERT TO ARC LENGTH (M) IF SPHERICAL COORD.
                 LAT_MAX = AMAX1(ABS(LA(K)%Y(1)), &
                         ABS(LA(K)%Y(LA(K)%NY))) * RAD_DEG
@@ -1218,11 +1218,11 @@ SUBROUTINE CR_CHECK (LO, LA)
                 DY = LA(K)%DY
             ENDIF
             CR_LIMIT = 0.5
-            IF (LA(K)%LAYGOV.EQ.1 .OR. LA(K)%LAYGOV.EQ.3)            &
+            IF (LA(K)%LAYGOV == 1 .OR. LA(K)%LAYGOV == 3)            &
                     CR_LIMIT = 0.35
             DEL_X = AMIN1(DX, DY) !FIND THE SMALLER BETWEEN DX AND DY
             DT = CR_LIMIT * DEL_X / SQRT(GRAV * H_MAX)
-            IF (DT .GE. LO%DT) THEN
+            IF (DT >= LO%DT) THEN
                 LA(K)%DT = LO%DT
                 LA(K)%REL_TIME = 1
             ELSE
@@ -1233,7 +1233,7 @@ SUBROUTINE CR_CHECK (LO, LA)
             !			LA(K)%REL_TIME = 2
             !			LA(K)%DT = LO%DT/LA(K)%REL_TIME
             !!			ASSIGN DEPENDENT VARIABLES
-            IF (LA(K)%LAYCORD.EQ.1) THEN
+            IF (LA(K)%LAYCORD == 1) THEN
                 LA(K)%RX = LA(K)%DT / LA(K)%DX
                 LA(K)%RY = LA(K)%DT / LA(K)%DY
                 LA(K)%GRX = GRAV * LA(K)%RX
@@ -1246,18 +1246,18 @@ SUBROUTINE CR_CHECK (LO, LA)
     NUM_LEVEL = NUM_GRID + 1
     DO KL = 3, NUM_LEVEL
         DO I = 1, NUM_GRID
-            IF (LA(I)%LAYSWITCH.EQ.0 .AND. LA(I)%LEVEL.EQ.KL - 1) THEN
+            IF (LA(I)%LAYSWITCH == 0 .AND. LA(I)%LEVEL == KL - 1) THEN
                 DO J = 1, NUM_GRID
-                    IF (LA(J)%LAYSWITCH.EQ.0 .AND.                    &
-                            LA(J)%PARENT.EQ.LA(I)%ID) THEN
+                    IF (LA(J)%LAYSWITCH == 0 .AND.                    &
+                            LA(J)%PARENT == LA(I)%ID) THEN
                         H_MAX = GX
                         DO KI = 1, LA(J)%NX
                             DO KJ = 1, LA(J)%NY
-                                IF (LA(J)%H(KI, KJ) .GT. H_MAX)            &
+                                IF (LA(J)%H(KI, KJ) > H_MAX)            &
                                         H_MAX = LA(J)%H(KI, KJ)
                             ENDDO
                         ENDDO
-                        IF (LA(J)%LAYCORD .EQ. 0) THEN
+                        IF (LA(J)%LAYCORD == 0) THEN
                             !CONVERT TO ARC LENGTH (M) IF SPHERICAL COORD.
                             LAT_MAX = AMAX1(ABS(LA(J)%Y(1)), &
                                     ABS(LA(J)%Y(LA(J)%NY))) * RAD_DEG
@@ -1270,12 +1270,12 @@ SUBROUTINE CR_CHECK (LO, LA)
                         ENDIF
 
                         CR_LIMIT = 0.5
-                        IF (LA(J)%LAYGOV.EQ.1 .OR. LA(J)%LAYGOV.EQ.3)    &
+                        IF (LA(J)%LAYGOV == 1 .OR. LA(J)%LAYGOV == 3)    &
                                 CR_LIMIT = 0.35
                         !FIND THE SMALLER BETWEEN DX AND DY
                         DEL_X = AMIN1(DX, DY)
                         DT = CR_LIMIT * DEL_X / SQRT(GRAV * H_MAX)
-                        IF (DT .GE. LA(I)%DT) THEN
+                        IF (DT >= LA(I)%DT) THEN
                             LA(J)%DT = LA(I)%DT
                             LA(J)%REL_TIME = 1
                         ELSE
@@ -1286,7 +1286,7 @@ SUBROUTINE CR_CHECK (LO, LA)
                         !					 LA(J)%REL_TIME = 2
                         !					 LA(J)%DT = LA(I)%DT/LA(J)%REL_TIME
                         !!					 ASSIGN DEPENDENT VARIABLES
-                        IF (LA(J)%LAYCORD.EQ.1) THEN
+                        IF (LA(J)%LAYCORD == 1) THEN
                             LA(J)%RX = LA(J)%DT / LA(J)%DX
                             LA(J)%RY = LA(J)%DT / LA(J)%DY
                             LA(J)%GRX = GRAV * LA(J)%RX
@@ -1345,19 +1345,19 @@ SUBROUTINE COORD_CONVERT (X_UTM, Y_UTM, LON, LAT, OLON, OLAT, OPTION)
     !FIND THE UTM ZONE (CENTRAL MERIDIAN) OF INPUT COORDINATES
     KI = 1
     DO I = 1, NUM_ZONE
-        IF (OLON.GE.(ZC(I) - 3.0) .AND. OLON.LT.(ZC(I) + 3.0)) THEN
+        IF (OLON >= (ZC(I) - 3.0) .AND. OLON < (ZC(I) + 3.0)) THEN
             LON0 = ZC(I)
         ENDIF
     ENDDO
 
-    IF (OLAT.LT.ZERO) THEN
+    IF (OLAT < ZERO) THEN
         FALSE_NORTHING = 10000000.0
     ELSE
         FALSE_NORTHING = 0.0
     ENDIF
     FALSE_EASTING = 500000.0
 
-    IF (OPTION.EQ.0) THEN
+    IF (OPTION == 0) THEN
         X_UTM = 0.0
         Y_UTM = 0.0
         X = 0.0
@@ -1369,7 +1369,7 @@ SUBROUTINE COORD_CONVERT (X_UTM, Y_UTM, LON, LAT, OLON, OLAT, OPTION)
         Y_UTM = Y + FALSE_NORTHING
     ENDIF
 
-    IF (OPTION.EQ.1) THEN
+    IF (OPTION == 1) THEN
         X = X_UTM - FALSE_EASTING
         Y = Y_UTM - FALSE_NORTHING
 
@@ -1433,13 +1433,13 @@ SUBROUTINE UTM_TO_SPH (X, Y, LON, LAT, LON0, LAT0)
     XF = 0.0
     YF = 0.0
     !*	  XF = 500000.0							  ! FOR NORTH HEMISPHERE
-    !*	  IF (LATIN .LT. 0.0) YF = 10000000.0     ! FOR SOUTH HEMISPHERE
+    !*	  IF (LATIN < 0.0) YF = 10000000.0     ! FOR SOUTH HEMISPHERE
     !.....CONVERT DEGREES TO RADIAN
     LT0 = LAT0 * RAD_DEG
     LN0 = LON0 * RAD_DEG
 
-    IF (LT0 .GT. POLE) LT0 = POLE
-    IF (LT0 .LT. -POLE) LT0 = -POLE
+    IF (LT0 > POLE) LT0 = POLE
+    IF (LT0 < -POLE) LT0 = -POLE
 
     S0 = A * ((1.0 - F2 / 4.0 - 3.0 * F4 / 64.0 - 5.0 * F6 / 256.) * LT0                &
             - (3. * F2 / 8.0 + 3.0 * F4 / 32.0 + 45.0 * F6 / 1024.0) * SIN(2.0 * LT0)    &
@@ -1454,8 +1454,8 @@ SUBROUTINE UTM_TO_SPH (X, Y, LON, LAT, LON0, LAT0)
             + (151.0 * E1**3 / 96.0) * SIN(6.0 * MU1)                        &
             + (1097.0 * E1**4 / 512.0) * SIN(8.0 * MU1)
 
-    IF (LT1 .GT. POLE) LT1 = POLE
-    IF (LT1 .LT. -POLE) LT1 = -POLE
+    IF (LT1 > POLE) LT1 = POLE
+    IF (LT1 < -POLE) LT1 = -POLE
 
     TMP1 = SQRT(1.0 - F2 * SIN(LT1)**2)
     NU1 = A / TMP1
@@ -1532,17 +1532,17 @@ SUBROUTINE SPH_TO_UTM (X, Y, LONIN, LATIN, LON0, LAT0)
     !*	  XF = 0.0
     !*	  YF = 0.0								! FOR NORTH HEMISPHERE
     !*	  XF = 500000.0
-    !*	  IF (LATIN .LT. 0.0) YF = 10000000.0   ! FOR SOUTH HEMISPHERE;
+    !*	  IF (LATIN < 0.0) YF = 10000000.0   ! FOR SOUTH HEMISPHERE;
     !.....CONVERT DEGREES TO RADIAN
     LAT = LATIN * RAD_DEG
     LON = LONIN * RAD_DEG
     LT0 = LAT0 * RAD_DEG
     LN0 = LON0 * RAD_DEG
 
-    IF (LAT .GT. POLE) LAT = POLE
-    IF (LAT .LT. -POLE) LAT = -POLE
-    IF (LT0 .GT. POLE) LT0 = POLE
-    IF (LT0 .LT. -POLE) LT0 = -POLE
+    IF (LAT > POLE) LAT = POLE
+    IF (LAT < -POLE) LAT = -POLE
+    IF (LT0 > POLE) LT0 = POLE
+    IF (LT0 < -POLE) LT0 = -POLE
 
     CS = COS(LAT)
     SN = SIN(LAT)
@@ -1606,13 +1606,13 @@ SUBROUTINE READ_INI_SURFACE (LO, LA, FAULT_INFO)
     WRITE (*, *) 'READING WATER SURFACE DISPLACEMENT DATA...'
 
     !LOAD CUSTOMIZED WATER SURFACE DISPLACEMENT FROM A FILE
-    IF (LO%LAYSWITCH.EQ.0 .AND. FAULT_INFO(1)%FS.EQ.0) THEN
+    IF (LO%LAYSWITCH == 0 .AND. FAULT_INFO(1)%FS == 0) THEN
         CALL READ_COMCOT_DEFORM (LO, FAULT_INFO(1))
     ENDIF
-    IF (LO%LAYSWITCH.EQ.0 .AND. FAULT_INFO(1)%FS.EQ.1) THEN
+    IF (LO%LAYSWITCH == 0 .AND. FAULT_INFO(1)%FS == 1) THEN
         CALL READ_MOST_DEFORM (LO, FAULT_INFO(1))
     ENDIF
-    IF (LO%LAYSWITCH.EQ.0 .AND. FAULT_INFO(1)%FS.EQ.2) THEN
+    IF (LO%LAYSWITCH == 0 .AND. FAULT_INFO(1)%FS == 2) THEN
         CALL READ_XYZ_DEFORM (LO, FAULT_INFO(1))
     ENDIF
 
@@ -1620,11 +1620,11 @@ SUBROUTINE READ_INI_SURFACE (LO, LA, FAULT_INFO)
     CALL ININTERP(LO, LA)
 
     !APPLY DISPLACEMENT ONTO ORIGINAL WATER SURFACE
-    IF (LO%LAYSWITCH .EQ. 0) THEN
+    IF (LO%LAYSWITCH == 0) THEN
         LO%Z(:, :, 1) = LO%Z(:, :, 1) + LO%DEFORM(:, :)
     ENDIF
     DO K = 1, NUM_GRID
-        IF (LA(K)%LAYSWITCH .EQ. 0) THEN
+        IF (LA(K)%LAYSWITCH == 0) THEN
             LA(K)%Z(:, :, 1) = LA(K)%Z(:, :, 1) + LA(K)%DEFORM(:, :)
         ENDIF
     ENDDO
@@ -1651,20 +1651,20 @@ SUBROUTINE READ_BATHYMETRY (LO, LA)
             NUM_FLT, V_LIMIT, RAD_DEG, RAD_MIN
 
     WRITE (*, *) 'READING BATHYMETRY DATA...'
-    IF (LO%LAYSWITCH .EQ. 0) THEN
-        IF (LO%FS .EQ. 0) CALL READ_COMCOT_BATHY(LO)
-        IF (LO%FS .EQ. 1) CALL READ_MOST_BATHY(LO)
-        IF (LO%FS .EQ. 2) CALL READ_XYZ_BATHY(LO)
-        IF (LO%FS .EQ. 3) CALL READ_ETOPO_BATHY(LO)
+    IF (LO%LAYSWITCH == 0) THEN
+        IF (LO%FS == 0) CALL READ_COMCOT_BATHY(LO)
+        IF (LO%FS == 1) CALL READ_MOST_BATHY(LO)
+        IF (LO%FS == 2) CALL READ_XYZ_BATHY(LO)
+        IF (LO%FS == 3) CALL READ_ETOPO_BATHY(LO)
         !WRITE BATHYMETRY DATA OF COMPUTATIONAL DOMAIN INTO FILE
         CALL BATHY_WRITE (LO)
     END IF
     DO I = 1, NUM_GRID
-        IF (LA(I)%LAYSWITCH .EQ. 0) THEN
-            IF (LA(I)%FS .EQ. 0) CALL READ_COMCOT_BATHY(LA(I))
-            IF (LA(I)%FS .EQ. 1) CALL READ_MOST_BATHY(LA(I))
-            IF (LA(I)%FS .EQ. 2) CALL READ_XYZ_BATHY(LA(I))
-            IF (LA(I)%FS .EQ. 3) CALL READ_ETOPO_BATHY(LA(I))
+        IF (LA(I)%LAYSWITCH == 0) THEN
+            IF (LA(I)%FS == 0) CALL READ_COMCOT_BATHY(LA(I))
+            IF (LA(I)%FS == 1) CALL READ_MOST_BATHY(LA(I))
+            IF (LA(I)%FS == 2) CALL READ_XYZ_BATHY(LA(I))
+            IF (LA(I)%FS == 3) CALL READ_ETOPO_BATHY(LA(I))
             !WRITE BATHYMETRY DATA OF COMPUTATIONAL DOMAIN INTO FILE
             CALL BATHY_WRITE (LA(I))
         END IF
@@ -1694,7 +1694,7 @@ SUBROUTINE READ_COMCOT_BATHY (LO)
     COMMON /CONS/ ELMAX, GRAV, PI, R_EARTH, GX, EPS, ZERO, ONE, NUM_GRID, &
             NUM_FLT, V_LIMIT, RAD_DEG, RAD_MIN
 
-    IF (LO%LAYGOV.EQ.0) THEN
+    IF (LO%LAYGOV == 0) THEN
         DX = LO%DX / 60.0
         DY = LO%DY / 60.0
     ELSE
@@ -1727,7 +1727,7 @@ SUBROUTINE READ_COMCOT_BATHY (LO)
         END DO
     ENDIF
 
-    IF (LO%ID .EQ. 1) THEN
+    IF (LO%ID == 1) THEN
         IS = 1
         JS = 1
     ELSE
@@ -1748,7 +1748,7 @@ SUBROUTINE READ_COMCOT_BATHY (LO)
     CLOSE (23)
 
     !MAP THE BATHYMETRY DATA ONTO NUMERICAL GRIDS VIA BILINEAR INTERPOLATION
-    IF (LO%LEVEL.EQ.1) THEN
+    IF (LO%LEVEL == 1) THEN
         CALL GRID_INTERP (LO%H, LO%X, LO%Y, LO%NX, LO%NY, H, X, Y, NX, NY)
     ELSE
         CALL GRID_INTERP (LO%H(2:LO%NX, 2:LO%NY), LO%X(2:LO%NX), &
@@ -1756,14 +1756,14 @@ SUBROUTINE READ_COMCOT_BATHY (LO)
     ENDIF
     !      WRITE(*,*) L%H(1,1),L%H(L%NX,L%NY)
 
-    IF (LO%PARENT.GE.1) THEN
+    IF (LO%PARENT >= 1) THEN
         !.....INTERPOLATED TO GET BATH VALUE FOR ADDITIONAL COLUMN AND ROW
         LO%H(1, :) = LO%H(2, :) * 2.0 - LO%H(3, :)
         LO%H(:, 1) = LO%H(:, 2) * 2.0 - LO%H(:, 3)
         LO%Y(1) = 2.0 * LO%Y(2) - LO%Y(3)
     END IF
 
-    IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+    IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
         LO%HT(:, :, 1) = LO%H(:, :)
         LO%HT(:, :, 2) = LO%H(:, :)
     ENDIF
@@ -1838,20 +1838,20 @@ SUBROUTINE READ_MOST_BATHY (LO)
     END DO
     !      WRITE(*,*) H(1,NY),H(NX,1)
 
-    IF (X(1).EQ.LO%X(1) .AND. Y(1).EQ.LO%Y(LO%NY) .AND.            &
-            NX.EQ.LO%NX .AND. NY.EQ.LO%NY) THEN
+    IF (X(1) == LO%X(1) .AND. Y(1) == LO%Y(LO%NY) .AND.            &
+            NX == LO%NX .AND. NY == LO%NY) THEN
         LO%H(:, :) = H(:, :)
     ELSE
         !MAP THE BATHYMETRY DATA ONTO NUMERICAL GRIDS VIA BILINEAR INTERPOLATION
         CALL GRID_INTERP (LO%H, LO%X, LO%Y, LO%NX, LO%NY, H, X, Y, NX, NY)
     ENDIF
 
-    IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+    IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
         LO%HT(:, :, 1) = LO%H(:, :)
         LO%HT(:, :, 2) = LO%H(:, :)
     ENDIF
 
-    !*	  IF (ABS(LO%H_LIMIT).GT.0.00001) CALL DEPTH_LIMIT (LO)
+    !*	  IF (ABS(LO%H_LIMIT) > 0.00001) CALL DEPTH_LIMIT (LO)
     !.....CALCULATE STILL WATER DEPTH AT VOLUME FLUX LOCATIONS
     !*	  CALL PQ_DEPTH (LO)
     DEALLOCATE(H, TMP, X, Y, YTMP, STAT = ISTAT)
@@ -1915,7 +1915,7 @@ SUBROUTINE READ_XYZ_BATHY (LO)
     DO I = 1, COUNT
         READ (23, *) XCOL(I), YCOL(I), ZCOL(I)
         IF (ZCOL(I)/=ZCOL(I)) ZCOL(I) = 9999.0
-        IF (ABS(ZCOL(I)).GE.HUGE(ZCOL(I))) ZCOL(I) = 9999.0
+        IF (ABS(ZCOL(I)) >= HUGE(ZCOL(I))) ZCOL(I) = 9999.0
     END DO
     CLOSE (23)
 
@@ -1925,10 +1925,10 @@ SUBROUTINE READ_XYZ_BATHY (LO)
     TMPX1 = XCOL(2)
     TMPY = YCOL(1)
     TMPY1 = YCOL(2)
-    IF (ABS(TMPX1 - TMPX).GT.EPS .AND. ABS(TMPY1 - TMPY).LT.EPS) THEN
-        !*	  IF (TMPX1.NE.TMPX .AND. TMPY1.EQ.TMPY) THEN
+    IF (ABS(TMPX1 - TMPX) > EPS .AND. ABS(TMPY1 - TMPY) < EPS) THEN
+        !*	  IF (TMPX1 /= TMPX .AND. TMPY1 == TMPY) THEN
         K = 1
-        DO WHILE (TMPX1.GT.TMPX)
+        DO WHILE (TMPX1 > TMPX)
             K = K + 1
             TMPX1 = XCOL(K)
         ENDDO
@@ -1966,10 +1966,10 @@ SUBROUTINE READ_XYZ_BATHY (LO)
     TMPY = YCOL(1)
     TMPY1 = YCOL(2)
     !	  write (*,*) TMPX,TMPX1,TMPY,TMPY1,NXY
-    IF (ABS(TMPX1 - TMPX).LT.EPS .AND. ABS(TMPY1 - TMPY).GT.EPS) THEN
-        !*	  IF (TMPX1.EQ.TMPX .AND. TMPY1.NE.TMPY) THEN
+    IF (ABS(TMPX1 - TMPX) < EPS .AND. ABS(TMPY1 - TMPY) > EPS) THEN
+        !*	  IF (TMPX1 == TMPX .AND. TMPY1 /= TMPY) THEN
         K = 1
-        DO WHILE (TMPX1.LE.TMPX)
+        DO WHILE (TMPX1 <= TMPX)
             K = K + 1
             TMPX1 = XCOL(K)
         ENDDO
@@ -2009,9 +2009,9 @@ SUBROUTINE READ_XYZ_BATHY (LO)
     !     Y COORDINATE IS FROM NORTH TO SOUTH OR FROM SOUTH TO NORTH
     !     IFLIP = 0: FLIP; 1: NO FLIP OPERATION
     IFLIP = 0
-    IF (YTMP(NY).LT.YTMP(NY - 1)) IFLIP = 1
+    IF (YTMP(NY) < YTMP(NY - 1)) IFLIP = 1
 
-    IF (IFLIP .EQ. 1) THEN
+    IF (IFLIP == 1) THEN
         ! FLIP Y COORDINATES
         DO J = 1, NY
             K = NY - J + 1
@@ -2035,7 +2035,7 @@ SUBROUTINE READ_XYZ_BATHY (LO)
 
     !      WRITE(*,*) L%H(1,1),L%H(L%NX,L%NY)
 
-    IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+    IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
         LO%HT(:, :, 1) = LO%H(:, :)
         LO%HT(:, :, 2) = LO%H(:, :)
     ENDIF
@@ -2112,8 +2112,8 @@ SUBROUTINE READ_ETOPO_BATHY (LO)
     DO I = 1, COUNT
         READ (23, *) XCOL(I), YCOL(I), ZCOL(I)
         IF (ZCOL(I)/=ZCOL(I)) ZCOL(I) = 9999.0
-        IF (ABS(ZCOL(I)).GE.HUGE(ZCOL(I))) ZCOL(I) = 9999.0
-        IF (XCOL(I).LT.0.0) XCOL(I) = XCOL(I) + 360.0
+        IF (ABS(ZCOL(I)) >= HUGE(ZCOL(I))) ZCOL(I) = 9999.0
+        IF (XCOL(I) < 0.0) XCOL(I) = XCOL(I) + 360.0
         ZCOL(I) = -ZCOL(I)
     END DO
     CLOSE (23)
@@ -2124,10 +2124,10 @@ SUBROUTINE READ_ETOPO_BATHY (LO)
     TMPX1 = XCOL(2)
     TMPY = YCOL(1)
     TMPY1 = YCOL(2)
-    IF (ABS(TMPX1 - TMPX).GE.EPS .AND. ABS(TMPY1 - TMPY).LT.EPS) THEN
-        !*	  IF (TMPX1.NE.TMPX .AND. TMPY1.EQ.TMPY) THEN
+    IF (ABS(TMPX1 - TMPX) >= EPS .AND. ABS(TMPY1 - TMPY) < EPS) THEN
+        !*	  IF (TMPX1 /= TMPX .AND. TMPY1 == TMPY) THEN
         K = 1
-        DO WHILE (TMPX1.GT.TMPX)
+        DO WHILE (TMPX1 > TMPX)
             K = K + 1
             TMPX1 = XCOL(K)
         ENDDO
@@ -2165,10 +2165,10 @@ SUBROUTINE READ_ETOPO_BATHY (LO)
     TMPY = YCOL(1)
     TMPY1 = YCOL(2)
     !	  write (*,*) TMPX,TMPX1,TMPY,TMPY1,NXY
-    IF (ABS(TMPX1 - TMPX).LT.EPS .AND. ABS(TMPY1 - TMPY).GT.EPS) THEN
-        !*	  IF (TMPX1.EQ.TMPX .AND. TMPY1.NE.TMPY) THEN
+    IF (ABS(TMPX1 - TMPX) < EPS .AND. ABS(TMPY1 - TMPY) > EPS) THEN
+        !*	  IF (TMPX1 == TMPX .AND. TMPY1 /= TMPY) THEN
         K = 1
-        DO WHILE (TMPX1.LE.TMPX)
+        DO WHILE (TMPX1 <= TMPX)
             K = K + 1
             TMPX1 = XCOL(K)
         ENDDO
@@ -2208,9 +2208,9 @@ SUBROUTINE READ_ETOPO_BATHY (LO)
     !     Y COORDINATE IS FROM NORTH TO SOUTH OR FROM SOUTH TO NORTH
     !     IFLIP = 0: FLIP; 1: NO FLIP OPERATION
     IFLIP = 0
-    IF (YTMP(NY).LT.YTMP(NY - 1)) IFLIP = 1
+    IF (YTMP(NY) < YTMP(NY - 1)) IFLIP = 1
 
-    IF (IFLIP .EQ. 1) THEN
+    IF (IFLIP == 1) THEN
         ! FLIP Y COORDINATES
         DO J = 1, NY
             K = NY - J + 1
@@ -2234,7 +2234,7 @@ SUBROUTINE READ_ETOPO_BATHY (LO)
 
     !      WRITE(*,*) L%H(1,1),L%H(L%NX,L%NY)
 
-    IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+    IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
         LO%HT(:, :, 1) = LO%H(:, :)
         LO%HT(:, :, 2) = LO%H(:, :)
     ENDIF
@@ -2295,25 +2295,25 @@ SUBROUTINE GRID_INTERP (H, H_X, H_Y, IX, JY, BATH, X, Y, NX, NY)
             KI = 0
             KJ = 0
             DO KS = 1, NX - 1
-                IF (H_X(I).GE.X(KS) .AND. H_X(I).LT.X(KS + 1)) THEN
+                IF (H_X(I) >= X(KS) .AND. H_X(I) < X(KS + 1)) THEN
                     KI = KS
                 END IF
             END DO
-            IF (H_X(I).GT.X(NX - 1) .AND. H_X(I).LE.X(NX)) THEN
+            IF (H_X(I) > X(NX - 1) .AND. H_X(I) <= X(NX)) THEN
                 KI = NX - 1
             ENDIF
 
             DO KS = 1, NY - 1
-                IF (H_Y(J).GE.Y(KS) .AND. H_Y(J).LT.Y(KS + 1)) THEN
+                IF (H_Y(J) >= Y(KS) .AND. H_Y(J) < Y(KS + 1)) THEN
                     KJ = KS
                 END IF
             END DO
-            IF (H_Y(J).GT.Y(NY - 1) .AND. H_Y(J).LE.Y(NY)) THEN
+            IF (H_Y(J) > Y(NY - 1) .AND. H_Y(J) <= Y(NY)) THEN
                 KJ = NY - 1
             ENDIF
 
-            IF (KI.GE.1 .AND. KI.LT.NX) THEN
-                IF (KJ.GE.1 .AND. KJ.LT.NY) THEN
+            IF (KI >= 1 .AND. KI < NX) THEN
+                IF (KJ >= 1 .AND. KJ < NY) THEN
                     DELTA_X = X(KI + 1) - X(KI)
                     DELTA_Y = Y(KJ + 1) - Y(KJ)
                     CX = (H_X(I) - X(KI)) / DELTA_X
@@ -2345,9 +2345,9 @@ SUBROUTINE DEPTH_LIMIT (LO)
 
     DO I = 1, LO%NX
         DO J = 1, LO%NY
-            IF (LO%H(I, J) .LE. LO%H_LIMIT) THEN
+            IF (LO%H(I, J) <= LO%H_LIMIT) THEN
                 LO%H(I, J) = -999.0
-                IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+                IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
                     LO%HT(I, J, 1) = -999.0
                     LO%HT(I, J, 2) = -999.0
                 END IF
@@ -2378,16 +2378,16 @@ SUBROUTINE TIDAL_CORRECTION (LO)
     TEMP = LO%H
 
     LO%H(:, :) = LO%H(:, :) + LO%TIDE_LEVEL
-    IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+    IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
         LO%HT(:, :, 1) = LO%HT(:, :, 1) + LO%TIDE_LEVEL
         LO%HT(:, :, 2) = LO%HT(:, :, 2) + LO%TIDE_LEVEL
     ENDIF
     !	  !SPECIAL TREATMENT
-    !	  IF (LO%LAYGOV.EQ.1) THEN
+    !	  IF (LO%LAYGOV == 1) THEN
     !		 DO I  = 1,LO%NX
     !		    DO J = 1,LO%NY
-    !			   IF (TEMP(I,J).LT.0.0 .AND.							&
-    !							TEMP(I,J)+LO%TIDE_LEVEL.GT.0.0) THEN
+    !			   IF (TEMP(I,J) < 0.0 .AND.							&
+    !							TEMP(I,J)+LO%TIDE_LEVEL > 0.0) THEN
     !				  LO%Z(I,J,1) = - (TEMP(I,J)+LO%TIDE_LEVEL)
     !				  LO%DZ(I,J,1) = 0.0
     !			   ENDIF
@@ -2418,7 +2418,7 @@ SUBROUTINE UPDATE_BATH (LO, LA)
 
     !.....UPDATE FIRST-LEVEL GRIDS
     LO%H(:, :) = LO%H(:, :) - LO%DEFORM(:, :)
-    IF (LO%INI_SWITCH.EQ.3 .OR. LO%INI_SWITCH.EQ.4) THEN
+    IF (LO%INI_SWITCH == 3 .OR. LO%INI_SWITCH == 4) THEN
         LO%HT(:, :, 1) = LO%HT(:, :, 1) - LO%DEFORM(:, :)
         LO%HT(:, :, 2) = LO%HT(:, :, 2) - LO%DEFORM(:, :)
     ENDIF
@@ -2427,9 +2427,9 @@ SUBROUTINE UPDATE_BATH (LO, LA)
 
     !.....UPDATE ALL SUB-LEVEL GRIDS
     DO I = 1, NUM_GRID
-        IF (LA(I)%LAYSWITCH.EQ.0) THEN
+        IF (LA(I)%LAYSWITCH == 0) THEN
             LA(I)%H(:, :) = LA(I)%H(:, :) - LA(I)%DEFORM(:, :)
-            IF (LO%INI_SWITCH.EQ.3 .OR. LA(I)%INI_SWITCH.EQ.4) THEN
+            IF (LO%INI_SWITCH == 3 .OR. LA(I)%INI_SWITCH == 4) THEN
                 LA(I)%HT(:, :, 1) = LA(I)%HT(:, :, 1) - LA(I)%DEFORM(:, :)
                 LA(I)%HT(:, :, 2) = LA(I)%HT(:, :, 2) - LA(I)%DEFORM(:, :)
             ENDIF
@@ -2460,27 +2460,27 @@ SUBROUTINE ADJUST_BATHYMETRY (LO, LA)
             NUM_FLT, V_LIMIT, RAD_DEG, RAD_MIN
 
     WRITE (*, *) 'ADJUSTING BATHYMETRY AND SETUP SHORELINE...'
-    IF (LO%LAYSWITCH .EQ. 0) THEN
+    IF (LO%LAYSWITCH == 0) THEN
         !CORRECTION CAUSED BY SEAFLOOR DEFORMATION ALREADY DONE
         !APPLY TIDAL LEVEL CORRECTION HERE
-        IF (ABS(LO%TIDE_LEVEL).GT.GX) CALL TIDAL_CORRECTION (LO)
+        IF (ABS(LO%TIDE_LEVEL) > GX) CALL TIDAL_CORRECTION (LO)
         !OUTPUT MODIFIED BATHYMETRY DATA
-        !*		 IF (LO%FLUXSWITCH.EQ.9) CALL BATHY_WRITE (LO)
+        !*		 IF (LO%FLUXSWITCH == 9) CALL BATHY_WRITE (LO)
         !SETUP WALL BOUNDARY ALONG GIVEN DEPTH CONTOUR
-        IF (ABS(LO%H_LIMIT).GT.GX) CALL DEPTH_LIMIT (LO)
+        IF (ABS(LO%H_LIMIT) > GX) CALL DEPTH_LIMIT (LO)
         CALL PQ_DEPTH (LO)
     END IF
     DO I = 1, NUM_GRID
-        IF (LA(I)%LAYSWITCH .EQ. 0) THEN
+        IF (LA(I)%LAYSWITCH == 0) THEN
             !CORRECTION CAUSED BY SEAFLOOR DEFORMATION ALREADY DONE
             !APPLY TIDAL LEVEL CORRECTION HERE
-            IF (ABS(LA(I)%TIDE_LEVEL).GT.GX) THEN
+            IF (ABS(LA(I)%TIDE_LEVEL) > GX) THEN
                 CALL TIDAL_CORRECTION (LA(I))
             ENDIF
             !OUTPUT MODIFIED BATHYMETRY DATA
-            !*			IF (LA(I)%FLUXSWITCH.EQ.9) CALL BATHY_WRITE (LA(I))
+            !*			IF (LA(I)%FLUXSWITCH == 9) CALL BATHY_WRITE (LA(I))
             !SETUP WALL BOUNDARY ALONG GIVEN DEPTH CONTOUR
-            IF (ABS(LA(I)%H_LIMIT).GT.GX) CALL DEPTH_LIMIT (LA(I))
+            IF (ABS(LA(I)%H_LIMIT) > GX) CALL DEPTH_LIMIT (LA(I))
             CALL PQ_DEPTH (LA(I))
         END IF
     END DO
@@ -2502,11 +2502,11 @@ SUBROUTINE PQ_DEPTH (LO)
 
     DO I = 1, LO%NX
         IP1 = I + 1
-        IF (IP1 .GE. LO%NX) IP1 = LO%NX
+        IF (IP1 >= LO%NX) IP1 = LO%NX
         DO J = 1, LO%NY
             JP1 = J + 1
-            IF (JP1 .GE. LO%NY) JP1 = LO%NY
-            IF (LO%H(I, J) .GT. GX) THEN
+            IF (JP1 >= LO%NY) JP1 = LO%NY
+            IF (LO%H(I, J) > GX) THEN
                 LO%HP(I, J) = 0.5 * (LO%H(I, J) + LO%H(IP1, J))
                 LO%HQ(I, J) = 0.5 * (LO%H(I, J) + LO%H(I, JP1))
             ENDIF
@@ -2576,7 +2576,7 @@ SUBROUTINE READ_FRIC_COEF1 (LO)
     DO I = 1, COUNT
         READ (23, *) XCOL(I), YCOL(I), ZCOL(I)
         IF (ZCOL(I)/=ZCOL(I)) ZCOL(I) = 0.0
-        IF (ABS(ZCOL(I)).GE.HUGE(ZCOL(I))) ZCOL(I) = 0.0
+        IF (ABS(ZCOL(I)) >= HUGE(ZCOL(I))) ZCOL(I) = 0.0
     END DO
     CLOSE (23)
 
@@ -2584,7 +2584,7 @@ SUBROUTINE READ_FRIC_COEF1 (LO)
     TEMP = XCOL(1)
     TEMP1 = XCOL(2)
     K = 1
-    DO WHILE (TEMP1.GT.TEMP)
+    DO WHILE (TEMP1 > TEMP)
         K = K + 1
         TEMP1 = XCOL(K)
     ENDDO
@@ -2619,9 +2619,9 @@ SUBROUTINE READ_FRIC_COEF1 (LO)
     !     I.E., Y COORDINATE IS FROM NORTH TO SOUTH OR FROM SOUTH TO NORTH
     !     IFLIP = 0: FLIP; 1: NO FLIP OPERATION
     IFLIP = 0
-    IF (YTMP(NY).LT.YTMP(NY - 1)) IFLIP = 1
+    IF (YTMP(NY) < YTMP(NY - 1)) IFLIP = 1
 
-    IF (IFLIP .EQ. 1) THEN
+    IF (IFLIP == 1) THEN
         ! FLIP Y COORDINATES
         DO J = 1, NY
             K = NY - J + 1
@@ -2642,7 +2642,7 @@ SUBROUTINE READ_FRIC_COEF1 (LO)
     CALL GRID_INTERP (LO%FRIC_VCOEF, LO%X, LO%Y, LO%NX, LO%NY, H, X, Y, NX, NY)
 
     !.....OUTPUT THE FRICTION COEF INTO A DATA FILE
-    IF (LO%LEVEL.LE.1) THEN
+    IF (LO%LEVEL <= 1) THEN
         IS = 1
         JS = 1
         IE = LO%NX
@@ -2729,7 +2729,7 @@ SUBROUTINE READ_FRIC_COEF (LO)
     DO I = 1, COUNT
         READ (23, *) XCOL(I), YCOL(I), ZCOL(I)
         IF (ZCOL(I)/=ZCOL(I)) ZCOL(I) = 9999.0
-        IF (ABS(ZCOL(I)).GE.HUGE(ZCOL(I))) ZCOL(I) = 9999.0
+        IF (ABS(ZCOL(I)) >= HUGE(ZCOL(I))) ZCOL(I) = 9999.0
     END DO
     CLOSE (23)
 
@@ -2739,10 +2739,10 @@ SUBROUTINE READ_FRIC_COEF (LO)
     TMPX1 = XCOL(2)
     TMPY = YCOL(1)
     TMPY1 = YCOL(2)
-    IF (ABS(TMPX1 - TMPX).GT.EPS .AND. ABS(TMPY1 - TMPY).LT.EPS) THEN
-        !*	  IF (TMPX1.NE.TMPX .AND. TMPY1.EQ.TMPY) THEN
+    IF (ABS(TMPX1 - TMPX) > EPS .AND. ABS(TMPY1 - TMPY) < EPS) THEN
+        !*	  IF (TMPX1 /= TMPX .AND. TMPY1 == TMPY) THEN
         K = 1
-        DO WHILE (TMPX1.GT.TMPX)
+        DO WHILE (TMPX1 > TMPX)
             K = K + 1
             TMPX1 = XCOL(K)
         ENDDO
@@ -2780,10 +2780,10 @@ SUBROUTINE READ_FRIC_COEF (LO)
     TMPY = YCOL(1)
     TMPY1 = YCOL(2)
     !	  write (*,*) TMPX,TMPX1,TMPY,TMPY1,NXY
-    IF (ABS(TMPX1 - TMPX).LT.EPS .AND. ABS(TMPY1 - TMPY).GT.EPS) THEN
-        !*	  IF (TMPX1.EQ.TMPX .AND. TMPY1.NE.TMPY) THEN
+    IF (ABS(TMPX1 - TMPX) < EPS .AND. ABS(TMPY1 - TMPY) > EPS) THEN
+        !*	  IF (TMPX1 == TMPX .AND. TMPY1 /= TMPY) THEN
         K = 1
-        DO WHILE (TMPX1.LE.TMPX)
+        DO WHILE (TMPX1 <= TMPX)
             K = K + 1
             TMPX1 = XCOL(K)
         ENDDO
@@ -2822,9 +2822,9 @@ SUBROUTINE READ_FRIC_COEF (LO)
     !     CHECK IF Y COORDINATE IS FROM NORTH TO SOUTH OR FROM SOUTH TO NORTH
     !     IFLIP = 0: FLIP; 1: NO FLIP OPERATION
     IFLIP = 0
-    IF (YTMP(NY).LT.YTMP(NY - 1)) IFLIP = 1
+    IF (YTMP(NY) < YTMP(NY - 1)) IFLIP = 1
 
-    IF (IFLIP .EQ. 1) THEN
+    IF (IFLIP == 1) THEN
         ! FLIP Y COORDINATES
         DO J = 1, NY
             K = NY - J + 1
@@ -2847,7 +2847,7 @@ SUBROUTINE READ_FRIC_COEF (LO)
     CALL GRID_INTERP (LO%FRIC_VCOEF, LO%X, LO%Y, LO%NX, LO%NY, H, X, Y, NX, NY)
 
     !.....OUTPUT THE FRICTION COEF INTO A DATA FILE
-    IF (LO%LEVEL.LE.1) THEN
+    IF (LO%LEVEL <= 1) THEN
         IS = 1
         JS = 1
         IE = LO%NX
